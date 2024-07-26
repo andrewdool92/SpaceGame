@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6061226557639725309
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_TargettingReticule
-  m_Shader: {fileID: -6465566751694194690, guid: 10bc83126eff66942b34a253b24b6fda,
+  m_Name: YellowThrusterFlare
+  m_Shader: {fileID: -6465566751694194690, guid: 5120c8d46e8f9884089d38597c5e584f,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -38,29 +51,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DecalMeshBiasType: 0
-    - _DecalMeshDepthBias: 0
-    - _DecalMeshViewBias: 0
-    - _DrawOrder: 0
-    - _LineWidth: 2
+    - _DissolveScale: 30
+    - _FlarePower: 2.01
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius: 100
     m_Colors:
-    - _LineColor: {r: 0.093187205, g: 0.49056596, b: 0, a: 0.7529412}
-    - _TargetPosition: {r: 0, g: 0, b: 0, a: 0}
-    - _Vector3: {r: 0, g: 0, b: 0, a: 0}
+    - _BaseColor: {r: 637.5849, g: 570.8221, b: 0, a: 1}
+    - _DissolveSpeed: {r: 0, g: 1.39, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &1590179815976011761
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7

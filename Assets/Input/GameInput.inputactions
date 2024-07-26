@@ -51,9 +51,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SuperBoost",
+                    "type": "Button",
+                    "id": "50777de6-ab90-473f-92bc-6aca16711821",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Boost",
                     "type": "Button",
                     "id": "5970ef25-1617-4d29-bc96-31963dfa39bc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "da7884b5-f659-453c-b99f-e73ae46f23fb",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -190,6 +208,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Boost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28277770-5d5d-45c1-ba2a-95ef7010f95c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "012f5323-a475-4fa1-afb6-5566a52ebde8",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SuperBoost",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
