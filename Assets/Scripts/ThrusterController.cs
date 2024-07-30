@@ -88,11 +88,12 @@ public class ThrusterController : MonoBehaviour
         leftDown.SetThrust(value);
     }
 
-    public void SetSuperBoost(bool value)
+    public void SetSuperBoost(bool value, bool boosting)
     {
         foreach(Thruster thruster in mainThrusters)
         {
             thruster.SetTrail(value);
+            thruster.SetThrust(boosting);
         }
     }
 }

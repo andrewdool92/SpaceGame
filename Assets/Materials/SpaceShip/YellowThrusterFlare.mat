@@ -53,9 +53,11 @@ Material:
     m_Floats:
     - _DissolveScale: 30
     - _FlarePower: 2.01
+    - _GradientPower: 4.58
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _BaseColor: {r: 637.5849, g: 570.8221, b: 0, a: 1}
+    - _BaseColor: {r: 9.962264, g: 8.919095, b: 0, a: 1}
     - _DissolveSpeed: {r: 0, g: 1.39, b: 0, a: 0}
+    - _TipColor: {r: 16, g: 0, b: 0.4559555, a: 1}
   m_BuildTextureStacks: []

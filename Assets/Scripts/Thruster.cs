@@ -37,9 +37,9 @@ public class Thruster : MonoBehaviour
     public void SetTrail(bool value)
     {
         trail.emitting = value;
-        if (value)
-        {
-            trail.Clear();
-        }
+        //if (value)
+        //{
+        //    trail.Clear();
+        //}
     }
 }

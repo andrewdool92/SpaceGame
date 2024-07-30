@@ -1,5 +1,7 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,12 +24,21 @@ public class ShipController : MonoBehaviour
     private bool boosting, reversing, superBoosting = false;
     private float steerPenalty = 1;
 
+    public CinemachineVirtualCamera playerCam;
+    public Destructible hull;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         thrusters = GetComponent<ThrusterController>();
         screenCentre = new Vector2(Screen.width / 2, Screen.height / 2);
+
+        hull.onDestruction += onShipDestroyed;
+    }
+
+    private void OnDestroy()
+    {
+        hull.onDestruction -= onShipDestroyed;
     }
 
     private void FixedUpdate()
@@ -65,8 +76,15 @@ public class ShipController : MonoBehaviour
         mousePosition = context.ReadValue<Vector2>();
         aimDirection =  mousePosition - screenCentre;
 
-        pitchValue = (Mathf.Abs(aimDirection.y) > 100) ? Mathf.Clamp(aimDirection.y / 100, -3, 3) : 0;
-        yawValue = (Mathf.Abs(aimDirection.x) > 100) ? Mathf.Sign(aimDirection.x) : 0;
+        if (aimDirection.magnitude < 50)
+        {
+            pitchValue = 0;
+            yawValue = 0;
+            return;
+        }
+
+        pitchValue = Mathf.Clamp(aimDirection.y / 100, -3, 3);
+        yawValue = Mathf.Clamp(aimDirection.x / 100, -3, 3);
     }
 
     public void HandleStrafe(InputAction.CallbackContext context)
@@ -84,13 +102,10 @@ public class ShipController : MonoBehaviour
     public void HandleBoost(InputAction.CallbackContext context)
     {
         boosting = context.performed;
-        thrusters.SetForwardThrusters(boosting);
 
-        if (!boosting)
+        if (!superBoosting)
         {
-            superBoosting = false;
-            thrusters.SetSuperBoost(false);
-            steerPenalty = 1;
+            thrusters.SetForwardThrusters(boosting);
         }
     }
 
@@ -108,11 +123,28 @@ public class ShipController : MonoBehaviour
 
     public void HandleSuperBoost(InputAction.CallbackContext context)
     {
-        if (boosting && context.performed)
+        superBoosting = context.performed;
+
+        if (context.performed)
         {
-            superBoosting = true;
-            thrusters.SetSuperBoost(true);
             steerPenalty = superBoostPenalty;
+            thrusters.SetSuperBoost(true, true);
         }
+        else
+        {
+            steerPenalty = 1;
+            thrusters.SetSuperBoost(false, boosting);
+        }
+    }
+
+    private void onShipDestroyed()
+    {
+        //playerCam.transform.SetParent(null);
+        //playerCam.LookAt = null;
+        //playerCam.Follow = null;
+
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+
+        GetComponent<PlayerInput>().enabled = false;
     }
 }
