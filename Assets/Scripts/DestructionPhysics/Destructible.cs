@@ -15,7 +15,6 @@ public class Destructible : MonoBehaviour
     public GameObject staticRemains;
     public float explosionRadius = 10;
     public Vector2 explosionForceRange = new(1000, 2000);
-    //public float explosionForce = 2000;
     public float shardTorqueModifier = 400f;
 
     public GameObject baseModel;
@@ -34,12 +33,16 @@ public class Destructible : MonoBehaviour
     public delegate void OnDestruction();
     public event OnDestruction onDestruction;
 
+    public Transform lockPoint;
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody>();
         TryGetComponent<ShieldController>(out shield);
+
+        if (!lockPoint) lockPoint = transform;
     }
 
     // Update is called once per frame

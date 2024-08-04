@@ -170,7 +170,7 @@
                 {
                     "name": "positive",
                     "id": "303967bb-11f7-4098-995a-c54a17584e99",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -225,7 +225,7 @@
                 {
                     "name": "",
                     "id": "012f5323-a475-4fa1-afb6-5566a52ebde8",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -14,6 +14,8 @@ public class ThrusterController : MonoBehaviour
     public Thruster leftDown;
     public Thruster rightDown;
 
+    public GameObject thrusterParent;
+
     public void SetForwardThrusters(bool value)
     {
         foreach(Thruster thruster in mainThrusters)
@@ -88,12 +90,16 @@ public class ThrusterController : MonoBehaviour
         leftDown.SetThrust(value);
     }
 
-    public void SetSuperBoost(bool value, bool boosting)
+    public void SetSuperBoost(bool value)
     {
         foreach(Thruster thruster in mainThrusters)
         {
             thruster.SetTrail(value);
-            thruster.SetThrust(boosting);
         }
+    }
+
+    public void SetThrustersEnabled(bool value)
+    {
+        thrusterParent.SetActive(value);
     }
 }

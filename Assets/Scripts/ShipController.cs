@@ -19,20 +19,23 @@ public class ShipController : MonoBehaviour
     private Rigidbody rb;
     private ThrusterController thrusters;
 
-    private float pitchValue, yawValue, rollValue = 0;
-    private float strafeValue, verticalValue = 0;
-    private bool boosting, reversing, superBoosting = false;
+    public float pitchValue, yawValue, rollValue = 0;
+    public float strafeValue, verticalValue = 0;
+    public bool boosting, reversing, superBoosting = false;
     private float steerPenalty = 1;
 
     public CinemachineVirtualCamera playerCam;
     public Destructible hull;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         thrusters = GetComponent<ThrusterController>();
         screenCentre = new Vector2(Screen.width / 2, Screen.height / 2);
+    }
 
+    private void Start()
+    {
         hull.onDestruction += onShipDestroyed;
     }
 
@@ -61,14 +64,24 @@ public class ShipController : MonoBehaviour
 
     }
 
-    private void HandleThrusters()
+    public void UpdateThrusters()
     {
-        thrusters.SetForwardThrusters(boosting);
+        thrusters.SetForwardThrusters(boosting || superBoosting);
         thrusters.SetReverseThrusters(reversing);
 
         thrusters.SetStrafe(strafeValue);
         thrusters.SetUpDown(verticalValue);
         thrusters.SetRoll(rollValue);
+
+        thrusters.SetSuperBoost(superBoosting);
+        if (superBoosting)
+        {
+            steerPenalty = superBoostPenalty;
+        }
+        else
+        {
+            steerPenalty = 1;
+        }
     }
 
     public void HandleAim(InputAction.CallbackContext context)
@@ -83,68 +96,60 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        pitchValue = Mathf.Clamp(aimDirection.y / 100, -3, 3);
-        yawValue = Mathf.Clamp(aimDirection.x / 100, -3, 3);
+        pitchValue = Mathf.Clamp(aimDirection.y / 200, -3, 3);
+        yawValue = Mathf.Clamp(aimDirection.x / 200, -3, 3);
+
+        UpdateThrusters();
     }
 
     public void HandleStrafe(InputAction.CallbackContext context)
     {
         strafeValue = context.ReadValue<float>();
-        thrusters.SetStrafe(strafeValue);
+
+        UpdateThrusters();
     }
 
     public void HandleUpDown(InputAction.CallbackContext context)
     {
         verticalValue = context.ReadValue<float>();
-        thrusters.SetUpDown(verticalValue);
+
+        UpdateThrusters();
     }
 
     public void HandleBoost(InputAction.CallbackContext context)
     {
         boosting = context.performed;
 
-        if (!superBoosting)
-        {
-            thrusters.SetForwardThrusters(boosting);
-        }
+        UpdateThrusters();
     }
 
     public void HandleReverse(InputAction.CallbackContext context)
     {
         reversing = context.performed;
-        thrusters.SetReverseThrusters(reversing);
     }
 
     public void HandleRoll(InputAction.CallbackContext context)
     {
         rollValue = context.ReadValue<float>();
-        thrusters.SetRoll(rollValue);
+
+        UpdateThrusters();
     }
 
     public void HandleSuperBoost(InputAction.CallbackContext context)
     {
         superBoosting = context.performed;
 
-        if (context.performed)
-        {
-            steerPenalty = superBoostPenalty;
-            thrusters.SetSuperBoost(true, true);
-        }
-        else
-        {
-            steerPenalty = 1;
-            thrusters.SetSuperBoost(false, boosting);
-        }
+        UpdateThrusters();
     }
 
     private void onShipDestroyed()
     {
-        //playerCam.transform.SetParent(null);
-        //playerCam.LookAt = null;
-        //playerCam.Follow = null;
-
         rb.constraints = RigidbodyConstraints.FreezeAll;
+        thrusters.thrusterParent.SetActive(false);
 
-        GetComponent<PlayerInput>().enabled = false;
+        if (TryGetComponent<PlayerInput>(out PlayerInput input))
+        {
+            input.enabled = false;
+        }
     }
 }
