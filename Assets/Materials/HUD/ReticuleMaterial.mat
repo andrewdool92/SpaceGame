@@ -118,7 +118,7 @@ Material:
     - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _Surface: 1
-    - _TargetLocked: 0
+    - _TargetLocked: 1
     - _TransparencyModifier: 0.8
     - _WorkflowMode: 1
     - _ZTest: 8

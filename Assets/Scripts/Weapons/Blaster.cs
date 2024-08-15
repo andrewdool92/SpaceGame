@@ -52,8 +52,7 @@ public class Blaster : MonoBehaviour
         for (int i = 0; i < maxProjectiles; i++)
         {
             Projectile projectile = Instantiate(projectileTemplate);
-            projectile.rootTransform = transform.root;
-            projectile.explosionEffect = explosion;
+            projectile.SetParent(this);
             projectile.gameObject.SetActive(true);
 
             pool.Enqueue(projectile);

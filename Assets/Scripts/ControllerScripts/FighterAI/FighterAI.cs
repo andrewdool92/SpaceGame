@@ -144,7 +144,7 @@ public class FighterAI : AIController
 
     public void Steer()
     {
-        Steer(target.position);
+        Steer(weapons.CalculateLeadPoint(transform.position, target.position, targetRb.velocity));
     }
 
     public void Steer(Vector3 aimPoint)

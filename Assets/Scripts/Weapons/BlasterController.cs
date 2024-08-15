@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BlasterController : MonoBehaviour
 {
     public List<Transform> weaponHardpoints;
+    public List<Animator> weaponAnimations;
+    public ParticleSystem muzzleFlare;
+
     public Blaster blaster;
     private Queue<Projectile> projectilePool;
     public int maxProjectiles = 20;
@@ -20,12 +24,24 @@ public class BlasterController : MonoBehaviour
 
     private Rigidbody rb;
 
+    private bool animate = false;
+    private bool flareEffect = false;
+    private int animationTrigger = 0;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         InitializeWeapons();
 
         timer = 0;
+
+        if (weaponAnimations.Count == weaponHardpoints.Count)
+        {
+            animate = true;
+            animationTrigger = Animator.StringToHash("Fire");
+        }
+
+        if (muzzleFlare) flareEffect = true;
     }
 
 
@@ -47,6 +63,10 @@ public class BlasterController : MonoBehaviour
     private void SingleShot()
     {
         blaster.Fire(weaponHardpoints[blasterIndex], transform.forward, rb.velocity);
+        PlayMuzzleFlare(blasterIndex);
+
+        if (animate) weaponAnimations[blasterIndex].SetTrigger(animationTrigger);
+
         blasterIndex = (blasterIndex + 1) % weaponHardpoints.Count;
     }
 
@@ -74,5 +94,28 @@ public class BlasterController : MonoBehaviour
     private void InitializeWeapons()
     {
         projectilePool = blaster.GenerateProjectilPool();
+    }
+
+    public Vector3 CalculateLeadPoint(Vector3 firingPoint, Vector3 target, Vector3 targetVelocity)
+    {
+        return CalculateLeadPoint(firingPoint, target, targetVelocity, Mathf.Infinity);
+    }
+
+    public Vector3 CalculateLeadPoint(Vector3 firingPoint, Vector3 target, Vector3 targetVelocity, float maxCompensation)
+    {
+        float distance = (target - firingPoint).magnitude;
+        float timeToHit = distance / blaster.projectileSpeed;
+
+        return target + targetVelocity * Mathf.Min(timeToHit, maxCompensation);
+    }
+
+    private void PlayMuzzleFlare(int index)
+    {
+        if (flareEffect)
+        {
+            muzzleFlare.transform.position = weaponHardpoints[index].position;
+            muzzleFlare.transform.rotation = transform.rotation;
+            muzzleFlare.Play();
+        }
     }
 }

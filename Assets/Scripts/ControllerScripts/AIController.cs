@@ -25,6 +25,8 @@ public class AIController : MonoBehaviour
 
     protected ObstacleCheck obstacleReport;
 
+    public Transform rotationJoint;
+
     private void Awake()
     {
         obstacleReport = new();
@@ -33,7 +35,9 @@ public class AIController : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        TryGetComponent<Rigidbody>(out rb);
+
+        if (!rotationJoint) rotationJoint = transform;
     }
 
     // Update is called once per frame
@@ -48,13 +52,13 @@ public class AIController : MonoBehaviour
     public void UpdateAimValues()
     {
         UpdateAimValues(target.position);
-        targetAngle = target.position - transform.position;
+        //targetAngle = target.position - rotationJoint.position;
     }
 
     public void UpdateAimValues(Vector3 aimPoint)
     {
-        targetAngle = aimPoint - transform.position;
-        Vector3 error = Quaternion.Inverse(transform.rotation) * targetAngle;
+        targetAngle = aimPoint - rotationJoint.position;
+        Vector3 error = Quaternion.Inverse(rotationJoint.rotation) * targetAngle;
 
         errorDirection = error.normalized;
         pitchError = new Vector3(0f, error.y, error.z).normalized;

@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class ReticuleController : MonoBehaviour
 {
     //public Transform reticule;
-    public Material reticuleMaterial;
+    public Material crosshairMaterial;
     public RectTransform reticule;
+    public RectTransform crosshair;
     public Canvas canvas;
 
     public float maxDistance;
@@ -18,15 +19,23 @@ public class ReticuleController : MonoBehaviour
     public Transform target;
     public bool targetLocked = false;
 
+    private RectTransform canvasRect;
+    private Vector3 crosshairPosition = Vector3.zero;
+
 
     private void Start()
     {
-        
+        canvasRect = canvas.GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        //CinemachineCore.CameraUpdatedEvent.AddListener(UpdateCrosshairPosition);
     }
 
     private void Update()
     {
-        //Debug.Log(Camera.main.WorldToScreenPoint(transform.position));
+
     }
 
     private void FixedUpdate()
@@ -34,6 +43,7 @@ public class ReticuleController : MonoBehaviour
         Scan();
         UpdateTargetLock();
         UpdateReticulePosition();
+        UpdateCrosshairPosition();
     }
 
     private void LateUpdate()
@@ -47,21 +57,27 @@ public class ReticuleController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance))
         {
-            //reticule.position = hit.point;
-            //reticule.rotation = Quaternion.LookRotation(-hit.normal);
+            //crosshair.position = hit.point;
+            //crosshair.rotation = Quaternion.LookRotation(-hit.normal);
+            crosshairPosition = hit.point;
 
             if (hit.transform.TryGetComponent<Destructible>(out Destructible newTarget))
             {
                 targetLocked = true;
                 target = newTarget.lockPoint;
-                reticuleMaterial.SetFloat("_TargetLocked", 1f);
+                crosshairMaterial.SetFloat("_TargetLocked", 1f);
+                reticule.gameObject.SetActive(true);
+                return;
             }
         }
         else
         {
-            //reticule.position = transform.position + transform.forward * maxDistance;
-            //reticule.rotation = transform.rotation;
+            crosshairPosition = transform.position + transform.forward * maxDistance;
+            //crosshair.position = transform.position + transform.forward * maxDistance;
+            //crosshair.rotation = transform.rotation;
         }
+
+        crosshairMaterial.SetFloat("_TargetLocked", 0f);
     }
 
     private void UpdateTargetLock()
@@ -73,44 +89,32 @@ public class ReticuleController : MonoBehaviour
         if (targetAngle > maxLockAngle || targetVector.magnitude > maxDistance)
         {
             targetLocked = false;
-            reticuleMaterial.SetFloat("_TargetLocked", 0f);
+            reticule.gameObject.SetActive(false);
+            //reticuleMaterial.SetFloat("_TargetLocked", 0f);
         }
     }
 
+    private delegate void UpdateElement();
+
     private void UpdateReticulePosition()
     {
-        //if (targetLocked)
-        //{
-        //    reticule.position = target.position;
-        //}
-        //else
-        //{
-        //    reticule.position = transform.position + transform.forward * maxDistance;
-        //}
+        if (!targetLocked) return;
 
-        //Vector3 cameraDirection = (reticule.position - Camera.main.transform.position).normalized;
-        //reticule.position = Camera.main.transform.position + cameraDirection * 50;
+        reticule.anchoredPosition = WorldToCanvasPosition(target.position);
+    }
 
-        Vector2 viewportPoint;
+    private void UpdateCrosshairPosition()
+    {
+        crosshair.anchoredPosition = WorldToCanvasPosition(crosshairPosition);
+    }
 
-        if (targetLocked)
-        {
-            viewportPoint = Camera.main.WorldToViewportPoint(target.position);
-        }
-        else
-        {
-            viewportPoint = Camera.main.WorldToViewportPoint(transform.position + transform.forward * maxDistance);
-        }
-
-        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-
+    private Vector2 WorldToCanvasPosition(Vector3 position)
+    {
+        Vector2 viewportPoint = Camera.main.WorldToViewportPoint(position);
         Vector2 screenPosition = new Vector2(
             ((viewportPoint.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
             ((viewportPoint.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f))
             );
-
-
-        //reticule.localPosition = viewportPoint - new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2);
-        reticule.anchoredPosition = screenPosition;
+        return screenPosition;
     }
 }

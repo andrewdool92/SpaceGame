@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8189970926266180907
 Transform:
   m_ObjectHideFlags: 0
@@ -48,15 +48,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 0}
+  blastMark: {fileID: 2257216625195102668}
   velocity: {x: 0, y: 0, z: 0}
   rootTransform: {fileID: 0}
   range: 0
-  decalMinSize: 0.5
-  decalMaxSize: 3
-  decalFadeSpeed: 0.1
-  damage: 1
-  blastPower: 1
-  blastRadius: 5
+  parent: {fileID: 0}
+--- !u!1 &3385890575115907356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2424318990381993339}
+  - component: {fileID: 3856404943860505824}
+  m_Layer: 0
+  m_Name: Impact Decal Centre
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2424318990381993339
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3385890575115907356}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8760437779856572662}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3856404943860505824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3385890575115907356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 29bbee68ba53f1948879487de34f02cd, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_DecalLayerMask: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 1}
+  m_Size: {x: 0.6, y: 0.6, z: 2}
+  m_FadeFactor: 1
 --- !u!1 &6035044375775430759
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,6 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8760437779856572662}
+  - component: {fileID: 2257216625195102668}
   - component: {fileID: 6542334498452981524}
   m_Layer: 0
   m_Name: Impact Decal
@@ -166,12 +219,29 @@ Transform:
   m_GameObject: {fileID: 8420321938712032222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.014}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2424318990381993339}
   m_Father: {fileID: 8189970926266180907}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2257216625195102668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8420321938712032222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f599dc18d46850419c06113d890b351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outer: {fileID: 6542334498452981524}
+  inner: {fileID: 3856404943860505824}
+  fadeSpeed: 1
+  fadeValue: 0
 --- !u!114 &6542334498452981524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +265,7 @@ MonoBehaviour:
   m_ScaleMode: 0
   m_Offset: {x: 0, y: 0, z: 1}
   m_Size: {x: 2, y: 2, z: 2}
-  m_FadeFactor: 0.837
+  m_FadeFactor: 1
 --- !u!1 &8848968062695093240
 GameObject:
   m_ObjectHideFlags: 0

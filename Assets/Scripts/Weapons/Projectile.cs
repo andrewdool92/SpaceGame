@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 public class Projectile : MonoBehaviour
 {
     public ParticleHitEffect explosionEffect;
-    private DecalProjector impactMark;
+    public ImpactDecal blastMark;
     private LineRenderer trail;
     private MeshRenderer particle;
     public Vector3 velocity = Vector3.zero;
@@ -17,25 +17,17 @@ public class Projectile : MonoBehaviour
 
     public float range = 0f;
 
-    public float decalMinSize = .5f;
-    public float decalMaxSize = 3f;
-    public float decalFadeSpeed = .1f;
-
-    public float damage = 1f;
-    public float blastPower = 1f;
-    public float blastRadius = 5f;
+    public Blaster parent;
 
     private bool active = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        impactMark = GetComponentInChildren<DecalProjector>();
         trail = GetComponentInChildren<LineRenderer>();
         particle = GetComponentInChildren<MeshRenderer>();
 
-        StartCoroutine(FadeBlastMark(impactMark));
-        impactMark.fadeFactor = 0;
+        blastMark.Initialize();
 
         DisableProjectile();
     }
@@ -91,24 +83,25 @@ public class Projectile : MonoBehaviour
 
     private void HandleCollision(RaycastHit hit)
     {
-        if (hit.transform.root == rootTransform) return;
+        //if (hit.transform.root == rootTransform) return;
+        if (hit.transform.IsChildOf(rootTransform)) return;
 
         explosionEffect.PlayAtLocation(lastPosition);
-        float remainingDamage = damage;
+        float remainingDamage = parent.damage;
 
         if (hit.transform.TryGetComponent<ShieldController>(out ShieldController shield))
         {
-            remainingDamage = shield.Damage(damage, velocity.normalized);
+            remainingDamage = shield.Damage(parent.damage, velocity.normalized);
 
             if (remainingDamage <= 0f) return;
         }
         if (hit.transform.TryGetComponent<Destructible>(out Destructible hull))
         {
-            hull.Damage(remainingDamage, blastPower, blastRadius, hit.point, velocity);
+            hull.Damage(remainingDamage, parent.blastPower, parent.blastRadius, hit.point, velocity);
         }
         else if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody body))
         {
-            body.AddForceAtPosition(hit.point, velocity.normalized * blastPower);
+            body.AddForceAtPosition(hit.point, velocity.normalized * parent.blastPower);
         }
 
         ApplyBlastMark(hit);
@@ -117,26 +110,16 @@ public class Projectile : MonoBehaviour
 
     private void ApplyBlastMark(RaycastHit hit)
     {
-        float decalSize = Random.Range(decalMinSize, decalMaxSize);
+        float decalSize = Random.Range(parent.decalMinSize, parent.decalMaxSize);
 
-        impactMark.size = new Vector3(decalSize, decalSize, decalSize);
-
-        impactMark.transform.position = hit.point;
-        impactMark.transform.forward = -hit.normal;
-        impactMark.transform.SetParent(hit.transform);
-        impactMark.gameObject.SetActive(true);
-        impactMark.fadeFactor = 1f;
+        blastMark.Apply(decalSize, hit);
     }
 
-    private IEnumerator FadeBlastMark(DecalProjector mark)
+    public void SetParent(Blaster parent)
     {
-        while (true)
-        {
-            if (mark.fadeFactor > 0)
-            {
-                mark.fadeFactor -= decalFadeSpeed;
-            }
-            yield return new WaitForSeconds(.1f);
-        }
+        this.parent = parent;
+        rootTransform = parent.transform;
+        explosionEffect = parent.explosion;
+        blastMark.fadeSpeed = parent.decalFadeSpeed;
     }
 }

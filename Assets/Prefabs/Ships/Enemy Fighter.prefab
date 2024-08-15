@@ -3195,7 +3195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   scanPointOffset: {x: 0, y: 0, z: 2}
-  minScanRange: 30
+  minScanRange: 40
   minScanAngle: 30
   maxScanAngle: 90
   maxScanAngleVelocity: 40
@@ -3225,10 +3225,10 @@ MonoBehaviour:
   pitchTorque: 200
   yawTorque: 50
   rollTorque: 200
-  verticalThrust: 10
-  strafeThrust: 10
+  verticalThrust: 20
+  strafeThrust: 20
   forwardThrust: 20
-  reverseThrust: 10
+  reverseThrust: 20
   superBoostThrust: 150
   superBoostPenalty: 0.5
   pitchValue: 0
@@ -3350,6 +3350,7 @@ MonoBehaviour:
   windupExplosionFX: {fileID: 1004092462725668090}
   explosionOriginPoint: {fileID: 3903290561592491583}
   explosionOriginVariance: 2
+  lockPoint: {fileID: 0}
 --- !u!54 &9010297399916971345
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5795,18 +5796,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
         type: 3}
+      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
+        type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.x
-      value: 192.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.y
-      value: 333.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.z
-      value: -422.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
         type: 3}

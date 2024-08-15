@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlasterImpactDecal
+  m_Name: BlasterImpactDecalCentre
   m_Shader: {fileID: -6465566751694194690, guid: 4bdf974cb71b1b94ab8e26ff85b25ea3,
     type: 3}
   m_Parent: {fileID: 0}
@@ -140,8 +140,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
-    - _ColorInner: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.1861333, b: 0, a: 1}
+    - _ColorInner: {r: 766.9961, g: 0.000068574795, b: 0, a: 1}
     - _ColorInside: {r: 0.23584905, g: 0, b: 0, a: 1}
     - _ColorOutside: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
