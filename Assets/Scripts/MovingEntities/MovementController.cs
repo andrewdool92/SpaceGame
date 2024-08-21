@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -5,6 +6,8 @@ public class MovementController : MonoBehaviour
 {
     public float pitchTorque, yawTorque, rollTorque, verticalThrust, strafeThrust, forwardThrust, reverseThrust, boostMultiplier, brakeDrag;
     public float boostPenalty;
+
+    public float maxVelocity = 5f;
 
     private Vector3 movementValues = Vector3.zero;
     private Vector3 rotationValues = Vector3.zero;
@@ -14,6 +17,7 @@ public class MovementController : MonoBehaviour
     private bool boosting = false;
     private float steerPenalty = 1;
     private float boostMod = 1;
+    private float storedForwardValue = 0f;
 
     public delegate void ThrusterUpdate(Vector3 value);
     public event ThrusterUpdate MovementUpdate;
@@ -34,13 +38,22 @@ public class MovementController : MonoBehaviour
 
     private void HandleMovement()
     {
-        rb.AddRelativeForce(movementValues);
-        rb.AddRelativeTorque(rotationValues);
+        rb.AddRelativeForce(movementValues, ForceMode.Acceleration);
+        rb.AddRelativeTorque(rotationValues, ForceMode.Acceleration);
+
+        if (!boosting && rb.velocity.sqrMagnitude > maxVelocity * maxVelocity)
+        {
+            rb.AddForce(-rb.velocity.normalized * (rb.velocity.magnitude - maxVelocity), ForceMode.Acceleration);
+        }
     }
 
     public void SetForward(float value)
     {
-        if (boosting && value <= 0) SetBoost(false);
+        if (boosting)
+        {
+            storedForwardValue = value;
+            return;
+        }
 
         movementValues.z = value;
         movementValues.z *= (value > 0 ? forwardThrust * boostMod : reverseThrust);
@@ -84,6 +97,7 @@ public class MovementController : MonoBehaviour
 
         if (boosting)
         {
+            storedForwardValue = movementValues.z;
             boostMod = boostMultiplier;
             steerPenalty = boostPenalty;
             movementValues.z = forwardThrust * boostMod;
@@ -92,6 +106,7 @@ public class MovementController : MonoBehaviour
         {
             boostMod = 1;
             steerPenalty = 1;
+            movementValues.z = storedForwardValue;
         }
 
         OnBoost?.Invoke(value);
@@ -100,5 +115,15 @@ public class MovementController : MonoBehaviour
     public void SetBrake(bool braking)
     {
         rb.drag = braking ? brakeDrag : 0;
+    }
+
+    public void SetLock(bool locked)
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        movementValues = Vector3.zero;
+        rotationValues = Vector3.zero;
+
+        rb.constraints = locked ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
     }
 }

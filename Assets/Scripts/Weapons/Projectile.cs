@@ -97,7 +97,8 @@ public class Projectile : MonoBehaviour
         }
         if (hit.transform.TryGetComponent<Destructible>(out Destructible hull))
         {
-            hull.Damage(remainingDamage, parent.blastPower, parent.blastRadius, hit.point, velocity);
+            hull.Damage(GetHitValues(remainingDamage, hit.point, velocity));
+            //hull.Damage(remainingDamage, parent.blastPower, parent.blastRadius, hit.point, velocity);
         }
         else if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody body))
         {
@@ -106,6 +107,11 @@ public class Projectile : MonoBehaviour
 
         ApplyBlastMark(hit);
         DisableProjectile();
+    }
+
+    private DamageInstance GetHitValues(float damage, Vector3 point, Vector3 velocity)
+    {
+        return new DamageInstance(damage, parent.blastPower, parent.blastRadius, point, velocity);
     }
 
     private void ApplyBlastMark(RaycastHit hit)

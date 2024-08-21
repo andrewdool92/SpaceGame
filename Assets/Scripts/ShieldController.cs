@@ -76,11 +76,13 @@ public class ShieldController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        DamageInstance hit = new DamageInstance(1f, 0f, 0f, collision.GetContact(0).point, collision.relativeVelocity);
         float remaining = Damage(1f, collision.relativeVelocity.normalized);
 
         if (remaining > 0f)
         {
-            hull?.Damage(remaining, 400f, 5f, collision.GetContact(0).point, collision.relativeVelocity);
+            hit.damage = remaining;
+            hull?.Damage(hit);
         }
     }
 

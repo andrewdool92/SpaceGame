@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Destructible : MonoBehaviour
+public class Destructible : MonoBehaviour, IDamageable
 {
     public float maxHealth;
     [SerializeField] private float currentHealth;
@@ -51,13 +50,13 @@ public class Destructible : MonoBehaviour
         
     }
 
-    public void Damage(float damage, float blastPower, float blastRadius, Vector3 point, Vector3 velocity)
+    public void Damage(DamageInstance hit)
     {
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth - hit.damage, 0, maxHealth);
 
         if (currentHealth <= 0)
         {
-            Shatter(blastRadius, blastPower, point, velocity.normalized);
+            Shatter(hit.blastRadius, hit.blastPower, hit.hitPoint, hit.hitVelocity.normalized);
         }
     }
 
