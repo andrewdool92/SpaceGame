@@ -33,8 +33,8 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UpDown",
-                    "type": "PassThrough",
+                    "name": "Up",
+                    "type": "Button",
                     "id": "164a6c83-9174-4194-b476-7797899a863c",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SuperBoost",
+                    "name": "Boost",
                     "type": "Button",
                     "id": "50777de6-ab90-473f-92bc-6aca16711821",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Boost",
+                    "name": "Forward",
                     "type": "Button",
                     "id": "5970ef25-1617-4d29-bc96-31963dfa39bc",
                     "expectedControlType": "Button",
@@ -72,6 +72,15 @@
                     "name": "Shoot",
                     "type": "Button",
                     "id": "da7884b5-f659-453c-b99f-e73ae46f23fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "3e883529-0380-4cda-b4ef-300a044ab84e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -157,37 +166,15 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "4c4253de-2c5c-4be0-b34f-6b890423304d",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "UpDown",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "positive",
-                    "id": "303967bb-11f7-4098-995a-c54a17584e99",
+                    "name": "",
+                    "id": "3e5177fa-60f9-4d41-97c7-25f302c23c7f",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "UpDown",
+                    "action": "Up",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "negative",
-                    "id": "a58a96c2-61d3-4d38-8011-8727fd9a311f",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "UpDown",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -207,7 +194,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Boost",
+                    "action": "Forward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -229,7 +216,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SuperBoost",
+                    "action": "Boost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "299fc44d-0275-45d2-a049-4e8968ea36f2",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

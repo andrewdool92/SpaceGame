@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(MovementController))]
-public class PlayerInputReader : MonoBehaviour
+public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
 {
-    public InputActionAsset inputActions;
+    private GameInput input;
 
     public int deadZone = 50;
     public int fineTuneRange = 100;
@@ -17,6 +17,11 @@ public class PlayerInputReader : MonoBehaviour
     private Vector2 screenCentre;
     private Vector2 aimDirection = Vector2.zero;
 
+    private void Awake()
+    {
+        input = new GameInput();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,17 +32,28 @@ public class PlayerInputReader : MonoBehaviour
         maxThreshold = fineTuneRange * fineTuneRange;
     }
 
-    private void OnForward(InputAction.CallbackContext context)
+    private void OnEnable()
     {
-        movement.SetForward(context.ReadValue<float>());
+        input.ShipControls.AddCallbacks(this);
     }
 
-    private void OnBoost(InputAction.CallbackContext context)
+    private void OnDisable()
+    {
+        input.ShipControls.RemoveCallbacks(this);
+    }
+
+    public void OnForward(InputAction.CallbackContext context)
+    {
+        movement.SetForward(context.ReadValue<float>());
+        Debug.Log(context.phase);
+    }
+
+    public void OnBoost(InputAction.CallbackContext context)
     {
         movement.SetBoost(context.ReadValue<bool>());
     }
 
-    private void HandleAim(InputAction.CallbackContext context)
+    public void OnAim(InputAction.CallbackContext context)
     {
         Vector2 aimValue = context.ReadValue<Vector2>() - screenCentre;
         float sqrMagnitude = aimValue.sqrMagnitude;
@@ -61,8 +77,14 @@ public class PlayerInputReader : MonoBehaviour
         aiming = true;
     }
 
-    private void HandleRoll(InputAction.CallbackContext context)
+    public void OnRoll(InputAction.CallbackContext context)
     {
         movement.SetRoll(context.ReadValue<float>());
     }
+
+    public void OnStrafe(InputAction.CallbackContext context) { }
+    public void OnUp(InputAction.CallbackContext context) { }
+    public void OnReverse(InputAction.CallbackContext context) { }
+    public void OnShoot(InputAction.CallbackContext context) { }
+    public void OnBrake(InputAction.CallbackContext context) { }
 }
