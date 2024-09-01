@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ReticuleController : MonoBehaviour
 {
-    //public Transform reticule;
     public Material crosshairMaterial;
     public RectTransform reticule;
     public RectTransform crosshair;

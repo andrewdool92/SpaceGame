@@ -44,20 +44,34 @@ public class Destructible : MonoBehaviour, IDamageable
         if (!lockPoint) lockPoint = transform;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Damage(DamageInstance hit)
     {
         currentHealth = Mathf.Clamp(currentHealth - hit.damage, 0, maxHealth);
 
         if (currentHealth <= 0)
         {
-            Shatter(hit.blastRadius, hit.blastPower, hit.hitPoint, hit.hitVelocity.normalized);
+            Break(hit);
         }
+    }
+
+    public void Break(DamageInstance hit)
+    {
+        if (broken) return;
+        broken = true;
+
+        if (shield)
+        {
+            shield.alive = false;
+        }
+
+        explosionFX.SetVector3("RigidbodyVelocity", rb.velocity);
+        explosionFX.Play();
+
+        baseModel.SetActive(false);
+
+        if (staticRemains) staticRemains.SetActive(true);
+
+        onDestruction?.Invoke();
     }
 
     public void Shatter(float hitImpactRadius, float hitForce, Vector3 hitPoint, Vector3 hitDirection)

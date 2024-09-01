@@ -7,6 +7,7 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
 {
     private GameInput input;
     private Destructible ship;
+    public PlayerWeaponSystem weapons;
 
     public int deadZone = 50;
     public int fineTuneRange = 200;
@@ -60,7 +61,15 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
 
     public void OnBoost(InputAction.CallbackContext context)
     {
-        movement.SetBoost(context.performed);
+        if (context.performed)
+        {
+            movement.SetBoost(true);
+        }
+        else if (context.canceled)
+        {
+            movement.SetBoost(false);
+        }
+        //movement.SetBoost(context.performed);
     }
 
     public void OnAim(InputAction.CallbackContext context)
@@ -101,7 +110,11 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
         movement.SetVertical(context.ReadValue<float>());
     }
     public void OnReverse(InputAction.CallbackContext context) { }
-    public void OnShoot(InputAction.CallbackContext context) { }
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed) weapons.OnFiringButtonPressed();
+        else if (context.canceled) weapons.OnFiringButtonReleased();
+    }
     public void OnBrake(InputAction.CallbackContext context)
     {
         movement.SetBrake(context.performed);

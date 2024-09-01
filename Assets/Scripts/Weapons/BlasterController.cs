@@ -62,7 +62,7 @@ public class BlasterController : MonoBehaviour
 
     private void SingleShot()
     {
-        blaster.Fire(weaponHardpoints[blasterIndex], transform.forward, rb.velocity);
+        blaster.Fire(weaponHardpoints[blasterIndex], rb.velocity);
         PlayMuzzleFlare(blasterIndex);
 
         if (animate) weaponAnimations[blasterIndex].SetTrigger(animationTrigger);

@@ -17,9 +17,13 @@ public class Projectile : MonoBehaviour
 
     public float range = 0f;
 
-    public Blaster parent;
+    public IWeapon parent;
 
     private bool active = false;
+
+    public float decalMinSize = .5f;
+    public float decalMaxSize = 3f;
+    public float decalFadeSpeed = .1f;
 
     // Start is called before the first frame update
     void Start()
@@ -86,46 +90,34 @@ public class Projectile : MonoBehaviour
         //if (hit.transform.root == rootTransform) return;
         if (hit.transform.IsChildOf(rootTransform)) return;
 
-        explosionEffect.PlayAtLocation(lastPosition);
-        float remainingDamage = parent.damage;
+        //explosionEffect.PlayAtLocation(lastPosition);
+        parent.PlayHitEffect(lastPosition);
+        DamageInstance damageInstance = parent.GetDamageInstance(hit.point, velocity);
 
-        if (hit.transform.TryGetComponent<ShieldController>(out ShieldController shield))
+        if (hit.transform.TryGetComponent<IDamageable>(out IDamageable target))
         {
-            remainingDamage = shield.Damage(parent.damage, velocity.normalized);
-
-            if (remainingDamage <= 0f) return;
-        }
-        if (hit.transform.TryGetComponent<Destructible>(out Destructible hull))
-        {
-            hull.Damage(GetHitValues(remainingDamage, hit.point, velocity));
-            //hull.Damage(remainingDamage, parent.blastPower, parent.blastRadius, hit.point, velocity);
+            //target.Damage(GetHitValues(parent.damage, hit.point, velocity));
+            target.Damage(damageInstance);
         }
         else if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody body))
         {
-            body.AddForceAtPosition(hit.point, velocity.normalized * parent.blastPower);
+            body.AddForceAtPosition(hit.point, velocity.normalized * damageInstance.blastPower);
         }
 
         ApplyBlastMark(hit);
         DisableProjectile();
     }
 
-    private DamageInstance GetHitValues(float damage, Vector3 point, Vector3 velocity)
-    {
-        return new DamageInstance(damage, parent.blastPower, parent.blastRadius, point, velocity);
-    }
-
     private void ApplyBlastMark(RaycastHit hit)
     {
-        float decalSize = Random.Range(parent.decalMinSize, parent.decalMaxSize);
+        float decalSize = Random.Range(decalMinSize, decalMaxSize);
 
         blastMark.Apply(decalSize, hit);
     }
 
-    public void SetParent(Blaster parent)
+    public void SetParent(IWeapon parent)
     {
         this.parent = parent;
-        rootTransform = parent.transform;
-        explosionEffect = parent.explosion;
-        blastMark.fadeSpeed = parent.decalFadeSpeed;
+        rootTransform = parent.GetRootTransform();
     }
 }

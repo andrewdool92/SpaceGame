@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TargettingCircleMat
-  m_Shader: {fileID: -6465566751694194690, guid: 10bc83126eff66942b34a253b24b6fda,
+  m_Name: Shader Graphs_PixelateShader
+  m_Shader: {fileID: -6465566751694194690, guid: 6bb36cf084a25c340996599949277817,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -38,29 +38,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DecalMeshBiasType: 0
-    - _DecalMeshDepthBias: 0
-    - _DecalMeshViewBias: 0
-    - _DrawOrder: 0
-    - _LineWidth: 2
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _Radius: 75
-    m_Colors:
-    - _LineColor: {r: 0.37274882, g: 1.9622638, b: 0, a: 0.49019608}
-    - _TargetPosition: {r: 0, g: 0, b: 0, a: 0}
-    - _Vector3: {r: 0, g: 0, b: 0, a: 0}
+    - _Pixels: 380
+    m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &1590179815976011761
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7

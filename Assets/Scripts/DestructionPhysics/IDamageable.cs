@@ -6,6 +6,7 @@ public interface IDamageable
 {
     public abstract void Damage(DamageInstance instance);
 
+    public abstract void Break(DamageInstance instance);
 }
 
 public struct DamageInstance

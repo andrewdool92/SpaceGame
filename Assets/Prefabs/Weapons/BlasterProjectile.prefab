@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8189970926266180907
 Transform:
   m_ObjectHideFlags: 0
@@ -52,7 +52,9 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   rootTransform: {fileID: 0}
   range: 0
-  parent: {fileID: 0}
+  decalMinSize: 0.5
+  decalMaxSize: 3
+  decalFadeSpeed: 0.1
 --- !u!1 &3385890575115907356
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,7 +81,7 @@ Transform:
   m_GameObject: {fileID: 3385890575115907356}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.042}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -100,14 +102,14 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 29bbee68ba53f1948879487de34f02cd, type: 2}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
+  m_StartAngleFade: 0
+  m_EndAngleFade: 13.256439
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
   m_DecalLayerMask: 1
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 1}
-  m_Size: {x: 0.6, y: 0.6, z: 2}
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 0.6, y: 0.6, z: 1}
   m_FadeFactor: 1
 --- !u!1 &6035044375775430759
 GameObject:
@@ -137,7 +139,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8189970926266180907}
@@ -257,14 +259,14 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: ad63e25b02ecffe4a9f2bbdb759c00bc, type: 2}
   m_DrawDistance: 1000
   m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
+  m_StartAngleFade: 0
+  m_EndAngleFade: 4.9511986
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
   m_DecalLayerMask: 1
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 1}
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 2, y: 2, z: 1}
   m_FadeFactor: 1
 --- !u!1 &8848968062695093240
 GameObject:
@@ -293,7 +295,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.088711835, y: 0.088711835, z: 0.088711835}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8189970926266180907}
@@ -350,8 +352,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.010990143
-        value: 0.787941
+        time: 0.0033683777
+        value: 0.14731598
         inSlope: 0
         outSlope: 0
         tangentMode: 0

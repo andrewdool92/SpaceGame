@@ -1,5 +1,7 @@
 using Cinemachine;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(Rigidbody))]
 public class MovementController : MonoBehaviour
@@ -7,13 +9,15 @@ public class MovementController : MonoBehaviour
     public float pitchTorque, yawTorque, rollTorque, verticalThrust, strafeThrust, forwardThrust, reverseThrust, boostMultiplier, brakeDrag;
     public float boostPenalty;
 
-    public float maxVelocity = 5f;
+    public float maxVelocity = 5f, maxBoostVelocity = 20f;
+    private float currentSpeedCap;
 
     private Vector3 movementValues = Vector3.zero;
     private Vector3 rotationValues = Vector3.zero;
 
     private Rigidbody rb;
 
+    [SerializeField]
     private bool boosting = false;
     private float steerPenalty = 1;
     private float boostMod = 1;
@@ -26,9 +30,18 @@ public class MovementController : MonoBehaviour
     public delegate void BoostUpdate(bool value);
     public event BoostUpdate OnBoost;
 
+    public List<VisualEffect> forwardThrusters = new List<VisualEffect>();
+    private int velocityID, boostingID, powerID;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        velocityID = Shader.PropertyToID("ShipVelocity");
+        boostingID = Shader.PropertyToID("Boosting");
+        powerID = Shader.PropertyToID("ThrusterPower");
+
+        currentSpeedCap = maxVelocity;
     }
 
     private void FixedUpdate()
@@ -38,13 +51,38 @@ public class MovementController : MonoBehaviour
 
     private void HandleMovement()
     {
-        rb.AddRelativeForce(movementValues, ForceMode.Acceleration);
         rb.AddRelativeTorque(rotationValues, ForceMode.Acceleration);
 
-        if (!boosting && rb.velocity.sqrMagnitude > maxVelocity * maxVelocity)
+        foreach (VisualEffect thruster in forwardThrusters)
         {
-            rb.AddForce(-rb.velocity.normalized * (rb.velocity.magnitude - maxVelocity), ForceMode.Acceleration);
+            thruster.SetVector3(velocityID, rb.velocity);
         }
+
+        if (boosting)
+        {
+            ApplyBoostForce();
+        }
+        else
+        {
+            rb.AddRelativeForce(movementValues, ForceMode.Acceleration);
+        }
+
+        if (rb.velocity.sqrMagnitude > currentSpeedCap * currentSpeedCap)
+        {
+            rb.AddForce(-rb.velocity.normalized * (rb.velocity.magnitude - currentSpeedCap), ForceMode.Acceleration);
+        }
+    }
+
+    private void ApplyBoostForce()
+    {
+        Vector3 boostForce = movementValues;
+        Vector3 localVelocity = Quaternion.Inverse(transform.rotation) * rb.velocity;
+
+        boostForce.y = -localVelocity.y;
+        boostForce.x = -localVelocity.x;
+        if (localVelocity.z < 0) boostForce.z *= 10;
+
+        rb.AddRelativeForce(boostForce, ForceMode.Acceleration);
     }
 
     public void SetForward(float value)
@@ -52,11 +90,18 @@ public class MovementController : MonoBehaviour
         if (boosting)
         {
             storedForwardValue = value;
-            return;
+            movementValues.z = forwardThrust * boostMod;
+            value = 2f;
+        }
+        else
+        {
+            movementValues.z = (value > 0 ? value * forwardThrust : value * reverseThrust);
         }
 
-        movementValues.z = value;
-        movementValues.z *= (value > 0 ? forwardThrust * boostMod : reverseThrust);
+        foreach(VisualEffect thruster in forwardThrusters)
+        {
+            thruster.SetFloat(powerID, value);
+        }
 
         MovementUpdate?.Invoke(movementValues);
     }
@@ -95,18 +140,28 @@ public class MovementController : MonoBehaviour
     {
         boosting = value;
 
+        foreach (VisualEffect thruster in forwardThrusters)
+        {
+            //thruster.SetBool(boostingID, value);
+            thruster.SetFloat(powerID, value ? 2 : storedForwardValue);
+        }
+
         if (boosting)
         {
             storedForwardValue = movementValues.z;
             boostMod = boostMultiplier;
             steerPenalty = boostPenalty;
             movementValues.z = forwardThrust * boostMod;
+
+            currentSpeedCap = maxBoostVelocity;
         }
         else
         {
             boostMod = 1;
             steerPenalty = 1;
             movementValues.z = storedForwardValue;
+
+            currentSpeedCap = maxVelocity;
         }
 
         OnBoost?.Invoke(value);
@@ -125,5 +180,10 @@ public class MovementController : MonoBehaviour
         rotationValues = Vector3.zero;
 
         rb.constraints = locked ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
+
+        foreach(VisualEffect thruster in forwardThrusters)
+        {
+            thruster.Stop();
+        }
     }
 }
