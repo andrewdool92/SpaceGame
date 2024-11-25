@@ -20,6 +20,7 @@ public class Destructible : MonoBehaviour, IDamageable
     private Rigidbody rb;
 
     public ShieldController shield;
+    private bool hasShield = false;
     private bool broken = false;
 
     public float mainExplosionDelay = 0f;
@@ -39,14 +40,21 @@ public class Destructible : MonoBehaviour, IDamageable
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody>();
-        TryGetComponent<ShieldController>(out shield);
+        hasShield = TryGetComponent<ShieldController>(out shield);
 
         if (!lockPoint) lockPoint = transform;
     }
 
     public void Damage(DamageInstance hit)
     {
+        if (hasShield && !shield.IsBroken())
+        {
+            shield.Damage(hit);
+            return;
+        }
+
         currentHealth = Mathf.Clamp(currentHealth - hit.damage, 0, maxHealth);
+        rb.AddExplosionForce(hit.blastPower, hit.hitPoint, hit.blastRadius);
 
         if (currentHealth <= 0)
         {

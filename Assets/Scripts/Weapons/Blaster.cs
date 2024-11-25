@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
-public class Blaster : MonoBehaviour, IWeapon
+public class Blaster : MonoBehaviour, IWeapon_OLD
 {
     public Transform rootTransform;
     public ParticleHitEffect explosion;
@@ -32,6 +31,9 @@ public class Blaster : MonoBehaviour, IWeapon
     public bool infiniteAmmo = true;
     private delegate void OnAmmoEmpty();
     private event OnAmmoEmpty ammoEmpty;
+
+    private Transform assistTarget;
+    private bool assist;
 
     private void Start()
     {
@@ -68,10 +70,25 @@ public class Blaster : MonoBehaviour, IWeapon
         StopCoroutine(firingSequence);
     }
 
+    private Vector3 GetFiringDirection(Transform firingPoint)
+    {
+        Vector2 errorVector = Random.insideUnitCircle * maxError;
+        Quaternion error = Quaternion.Euler(errorVector.x, errorVector.y, 0);
+
+        if (assist)
+        {
+            Vector3 dir = (assistTarget.position - firingPoint.position).normalized;
+            dir = Vector3.RotateTowards(transform.forward, dir, Mathf.Deg2Rad * 0.5f, 0f);
+            return error * dir;
+        }
+
+        return error * transform.forward;
+    }
+
     public IEnumerator FireSequence()
     {
-        Vector2 errorVector;
-        Quaternion error;
+        //Vector2 errorVector;
+        //Quaternion error;
         Vector3 firingDirection;
         Projectile proj;
         Transform firingPoint;
@@ -80,9 +97,10 @@ public class Blaster : MonoBehaviour, IWeapon
         {
             firingPoint = weaponHardpoints[hardpointIndex].transform;
 
-            errorVector = Random.insideUnitCircle * maxError;
-            error = Quaternion.Euler(errorVector.x, errorVector.y, 0);
-            firingDirection = error * transform.forward;
+            //errorVector = Random.insideUnitCircle * maxError;
+            //error = Quaternion.Euler(errorVector.x, errorVector.y, 0);
+            //firingDirection = error * transform.forward;
+            firingDirection = GetFiringDirection(firingPoint);
 
             proj = projectilePool.Dequeue();
             proj.Fire(firingPoint.position, firingDirection * projectileSpeed, projectileRange);
@@ -114,11 +132,11 @@ public class Blaster : MonoBehaviour, IWeapon
         return rootTransform;
     }
 
-    public void AddEventListener(IWeaponListener listener)
+    public void AddEventListener(IWeaponListener_OLD listener)
     {
         ammoEmpty += listener.OnAmmoEmpty;
     }
-    public void RemoveEventListener(IWeaponListener listener)
+    public void RemoveEventListener(IWeaponListener_OLD listener)
     {
         ammoEmpty -= listener.OnAmmoEmpty;
     }
@@ -131,8 +149,11 @@ public class Blaster : MonoBehaviour, IWeapon
         if (!ammoLeft) ammoEmpty?.Invoke();
     }
 
-
-
+    public void OnAimAssist(bool assist, Transform target)
+    {
+        this.assist = assist;
+        this.assistTarget = target;
+    }
 
 
     // below is being phased out

@@ -1,8 +1,11 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Weapons;
+
 
 public class ReticuleController : MonoBehaviour
 {
@@ -14,16 +17,31 @@ public class ReticuleController : MonoBehaviour
     public float maxDistance;
 
     public float maxLockAngle = 15f;
+    public float maxAssistAngle = 0f;
+    public float scanRadius = 10f;
 
     public Transform target;
     public bool targetLocked = false;
+    public bool aimAssisting = false;
+    public Vector3 assistVector = Vector3.zero;
 
     private RectTransform canvasRect;
-    private Vector3 crosshairPosition = Vector3.zero;
+    [SerializeField] public Transform aimTransform;
+
+    public delegate void OnAimAssistUpdated(bool assist, Targetable target);
+    public OnAimAssistUpdated onAimAssist;
+
+    private RaycastHit[] scanHits = new RaycastHit[20];
+
+    private WeaponSystem[] weapons;
+
+    private delegate void OnFixedUpdate();
+    private OnFixedUpdate onFixedUpdate;
 
 
-    private void Start()
+    private void Awake()
     {
+        onFixedUpdate = () => { };
         canvasRect = canvas.GetComponent<RectTransform>();
     }
 
@@ -32,51 +50,108 @@ public class ReticuleController : MonoBehaviour
         //CinemachineCore.CameraUpdatedEvent.AddListener(UpdateCrosshairPosition);
     }
 
-    private void Update()
-    {
-
-    }
-
     private void FixedUpdate()
     {
-        Scan();
-        UpdateTargetLock();
-        UpdateReticulePosition();
-        UpdateCrosshairPosition();
+        onFixedUpdate();
+        //Scan();
+        //UpdateTargetLock();
+        //UpdateReticulePosition();
+        //UpdateCrosshairPosition();
     }
 
-    private void LateUpdate()
-    {
+    //private void LateUpdate()
+    //{
 
+    //}
+
+    public void AssignWeapons(WeaponSystem mainWeapons, WeaponSystem secondaryWeapons)
+    {
+        weapons = new WeaponSystem[] { mainWeapons, secondaryWeapons };
+
+        weapons[0].SetAimTransform(aimTransform);
+        weapons[1].SetAimTransform(aimTransform);
+
+        onFixedUpdate = () =>
+        {
+            Scan();
+            UpdateTargetLock();
+            UpdateReticulePosition();
+            UpdateCrosshairPosition();
+        };
     }
 
     private void Scan()
     {
         RaycastHit hit;
+        Ray ray = new(transform.position, transform.forward);
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance))
+        if (ScanAhead(out Targetable newTarget))
         {
-            //crosshair.position = hit.point;
-            //crosshair.rotation = Quaternion.LookRotation(-hit.normal);
-            crosshairPosition = hit.point;
+            target = newTarget.lockPoint;
+            targetLocked = true;
+            aimAssisting = true;
 
-            if (hit.transform.TryGetComponent<Destructible>(out Destructible newTarget))
-            {
-                targetLocked = true;
-                target = newTarget.lockPoint;
-                crosshairMaterial.SetFloat("_TargetLocked", 1f);
-                reticule.gameObject.SetActive(true);
-                return;
-            }
+            crosshairMaterial.SetFloat("_TargetLocked", 1f);
+            aimTransform.position = target.position;
+
+            reticule.gameObject.SetActive(true);
+            onAimAssist?.Invoke(true, newTarget);
+            return;
+        }
+
+        if (Physics.Raycast(ray, out hit, maxDistance))
+        {
+            aimTransform.position = hit.point;
+
+            //if (hit.transform.TryGetComponent<Targetable>(out Targetable newTarget) && newTarget.active)
+            //{
+            //    targetLocked = true;
+            //    aimAssisting = true;
+            //    target = newTarget.lockPoint;
+            //    crosshairMaterial.SetFloat("_TargetLocked", 1f);
+            //    reticule.gameObject.SetActive(true);
+            //    return;
+            //}
         }
         else
         {
-            crosshairPosition = transform.position + transform.forward * maxDistance;
-            //crosshair.position = transform.position + transform.forward * maxDistance;
-            //crosshair.rotation = transform.rotation;
+            aimTransform.position = transform.position + transform.forward * maxDistance;
         }
 
+        aimAssisting = false;
+        onAimAssist?.Invoke(false, null);
         crosshairMaterial.SetFloat("_TargetLocked", 0f);
+    }
+
+    private bool ScanAhead(out Targetable target)
+    {
+        Ray ray = new(transform.position + transform.forward * (1 + scanRadius), transform.forward);
+        int hits = Physics.SphereCastNonAlloc(ray, scanRadius, scanHits, maxDistance);
+        float bestAngle = maxAssistAngle;
+        float bestDist = maxDistance;
+        target = null;
+
+        for (int i = 0; i < hits; i++)
+        {
+            RaycastHit hit = scanHits[i];
+
+            if (hit.distance < bestDist 
+                && hit.transform.TryGetComponent<Targetable>(out Targetable newTarget)
+                && newTarget.active)
+            {
+                Vector3 targetVector = newTarget.lockPoint.position - transform.position;
+                float targetAngle = Vector3.Angle(transform.forward, targetVector);
+
+                if (targetAngle < bestAngle)
+                {
+                    bestAngle = targetAngle;
+                    bestDist = hit.distance;
+                    target = newTarget;
+                }
+            }
+        }
+
+        return bestAngle != maxAssistAngle;
     }
 
     private void UpdateTargetLock()
@@ -104,7 +179,7 @@ public class ReticuleController : MonoBehaviour
 
     private void UpdateCrosshairPosition()
     {
-        crosshair.anchoredPosition = WorldToCanvasPosition(crosshairPosition);
+        crosshair.anchoredPosition = WorldToCanvasPosition(aimTransform.position);
     }
 
     private Vector2 WorldToCanvasPosition(Vector3 position)

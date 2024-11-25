@@ -91,6 +91,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e883529-0380-4cda-b4ef-300a044ab84e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""da7884b5-f659-453c-b99f-e73ae46f23fb"",
@@ -100,9 +109,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Brake"",
+                    ""name"": ""Secondary"",
                     ""type"": ""Button"",
-                    ""id"": ""3e883529-0380-4cda-b4ef-300a044ab84e"",
+                    ""id"": ""5600ebfd-dae0-4122-85cf-769e083c0aa5"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -222,17 +231,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""28277770-5d5d-45c1-ba2a-95ef7010f95c"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""012f5323-a475-4fa1-afb6-5566a52ebde8"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -252,6 +250,28 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87fb56da-5f1f-4e94-8647-b794eaf6fea7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28277770-5d5d-45c1-ba2a-95ef7010f95c"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -267,8 +287,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_ShipControls_Reverse = m_ShipControls.FindAction("Reverse", throwIfNotFound: true);
         m_ShipControls_Boost = m_ShipControls.FindAction("Boost", throwIfNotFound: true);
         m_ShipControls_Forward = m_ShipControls.FindAction("Forward", throwIfNotFound: true);
-        m_ShipControls_Shoot = m_ShipControls.FindAction("Shoot", throwIfNotFound: true);
         m_ShipControls_Brake = m_ShipControls.FindAction("Brake", throwIfNotFound: true);
+        m_ShipControls_Shoot = m_ShipControls.FindAction("Shoot", throwIfNotFound: true);
+        m_ShipControls_Secondary = m_ShipControls.FindAction("Secondary", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -337,8 +358,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_ShipControls_Reverse;
     private readonly InputAction m_ShipControls_Boost;
     private readonly InputAction m_ShipControls_Forward;
-    private readonly InputAction m_ShipControls_Shoot;
     private readonly InputAction m_ShipControls_Brake;
+    private readonly InputAction m_ShipControls_Shoot;
+    private readonly InputAction m_ShipControls_Secondary;
     public struct ShipControlsActions
     {
         private @GameInput m_Wrapper;
@@ -350,8 +372,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @Reverse => m_Wrapper.m_ShipControls_Reverse;
         public InputAction @Boost => m_Wrapper.m_ShipControls_Boost;
         public InputAction @Forward => m_Wrapper.m_ShipControls_Forward;
-        public InputAction @Shoot => m_Wrapper.m_ShipControls_Shoot;
         public InputAction @Brake => m_Wrapper.m_ShipControls_Brake;
+        public InputAction @Shoot => m_Wrapper.m_ShipControls_Shoot;
+        public InputAction @Secondary => m_Wrapper.m_ShipControls_Secondary;
         public InputActionMap Get() { return m_Wrapper.m_ShipControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -382,12 +405,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Forward.started += instance.OnForward;
             @Forward.performed += instance.OnForward;
             @Forward.canceled += instance.OnForward;
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
             @Brake.started += instance.OnBrake;
             @Brake.performed += instance.OnBrake;
             @Brake.canceled += instance.OnBrake;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+            @Secondary.started += instance.OnSecondary;
+            @Secondary.performed += instance.OnSecondary;
+            @Secondary.canceled += instance.OnSecondary;
         }
 
         private void UnregisterCallbacks(IShipControlsActions instance)
@@ -413,12 +439,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Forward.started -= instance.OnForward;
             @Forward.performed -= instance.OnForward;
             @Forward.canceled -= instance.OnForward;
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
             @Brake.started -= instance.OnBrake;
             @Brake.performed -= instance.OnBrake;
             @Brake.canceled -= instance.OnBrake;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+            @Secondary.started -= instance.OnSecondary;
+            @Secondary.performed -= instance.OnSecondary;
+            @Secondary.canceled -= instance.OnSecondary;
         }
 
         public void RemoveCallbacks(IShipControlsActions instance)
@@ -445,7 +474,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnReverse(InputAction.CallbackContext context);
         void OnBoost(InputAction.CallbackContext context);
         void OnForward(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
         void OnBrake(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnSecondary(InputAction.CallbackContext context);
     }
 }

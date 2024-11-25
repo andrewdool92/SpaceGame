@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f0c71b5e919ad4cabf19a647b3f710, type: 3}
+  m_Name: MissileLauncher
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 4750772699358624206, guid: d11cc6cf28d1fc34ca98daee75a2699a,
+    type: 3}
+  muzzleFlare: {fileID: 7927349377117703769, guid: 6e8b20bdf70b0b14fa11051c0564f570,
+    type: 3}
+  projectileTemplate: {fileID: 2943845402110215153, guid: 41f3dd9a15d48224f87c54bc6345e126,
+    type: 3}
+  maxProjectiles: 20
+  firingDelay: 500
+  multitargetDelay: 50
+  maxTargets: 1
+  maxAmmo: 0
+  damage: 3
+  blastPower: 1
+  blastRadius: 3
+  blastDamageFalloff: 1
+  detonationRange: 1
+  projectileRange: 200
+  projectileSpeed: 35
+  maxError: 4
+  homing: 1
+  fuelTime: 10
+  fuelAccelleration: 5
+  turnAccelleration: 0
+  turnSpeed: 40
+  preciseTurnSpeed: 90
+  maxVelocity: 60
+  blastMark: {fileID: 4165884512928924104, guid: ff88704302e968049b4182fc5681b76c,
+    type: 3}
+  blastMarkSizeRange: {x: 2, y: 3}
+  triggerBehaviour: 0

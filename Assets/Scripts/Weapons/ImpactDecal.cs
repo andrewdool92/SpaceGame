@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -11,17 +13,42 @@ public class ImpactDecal : MonoBehaviour
     public float fadeSpeed = 1f;
     public float fadeValue = 0f;
 
+    private bool fading = false;
+
+    // Async caused errors on application closed; switched to coroutines, which die with the gameobject
+    private async void FadeAsync()
+    {
+        SetFadeValue(1f);
+
+        if (!fading)
+        {
+            fading = true;
+
+            while (fadeValue > 0)
+            {
+                await Task.Delay(100);
+                SetFadeValue(fadeValue - (fadeSpeed * .1f));
+            }
+
+            fading = false;
+        }
+    }
+
     private IEnumerator Fade()
     {
-        while (true)
+        SetFadeValue(1f);
+
+        if (!fading)
         {
-            if (fadeValue > 0)
+            fading = true;
+
+            while (fadeValue > 0)
             {
-                fadeValue -= fadeSpeed * .1f;
-                outer.fadeFactor = fadeValue;
-                inner.fadeFactor = fadeValue;
+                yield return new WaitForSeconds(.1f);
+                SetFadeValue(fadeValue - (fadeSpeed * .1f));
             }
-            yield return new WaitForSeconds(.1f);
+
+            fading = false;
         }
     }
 
@@ -35,17 +62,21 @@ public class ImpactDecal : MonoBehaviour
     public void Initialize()
     {
         SetFadeValue(0f);
-        StartCoroutine(Fade());
     }
 
     public void Apply(float size, RaycastHit hit)
     {
+        if (!hit.transform.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
         outer.size = new Vector3(size, size, 2);
         inner.size = new Vector3(size / 5, size / 5, 2);
 
         transform.position = hit.point + hit.normal * .5f;
         transform.transform.forward = -hit.normal;
         transform.parent = hit.transform;
-        SetFadeValue(1f);
+        StartCoroutine(Fade());
     }
 }

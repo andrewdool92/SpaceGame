@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Weapons;
 
 [RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Destructible))]
@@ -7,7 +8,8 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
 {
     private GameInput input;
     private Destructible ship;
-    public PlayerWeaponSystem weapons;
+    public WeaponSystem mainWeapons, secondaryWeapons;
+    public ReticuleController reticuleController;
 
     public int deadZone = 50;
     public int fineTuneRange = 200;
@@ -45,12 +47,17 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     {
         input.ShipControls.AddCallbacks(this);
         ship.onDestruction += OnDeath;
+        //reticuleController.onAimAssist += mainWeapons.OnTargetLocked;
+        //mainWeapons.SetAimTransform(reticuleController.aimTransform);
+
+        reticuleController.AssignWeapons(mainWeapons, secondaryWeapons);
     }
 
     private void OnDisable()
     {
         input.ShipControls.RemoveCallbacks(this);
         ship.onDestruction -= OnDeath;
+        //reticuleController.onAimAssist -= mainWeapons.OnTargetLocked;
     }
 
     public void OnForward(InputAction.CallbackContext context)
@@ -112,8 +119,8 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     public void OnReverse(InputAction.CallbackContext context) { }
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.performed) weapons.OnFiringButtonPressed();
-        else if (context.canceled) weapons.OnFiringButtonReleased();
+        if (context.performed) mainWeapons.OnFiringButtonPressed();
+        else if (context.canceled) mainWeapons.OnFiringButtonReleased();
     }
     public void OnBrake(InputAction.CallbackContext context)
     {
@@ -124,5 +131,11 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     {
         input.Disable();
         movement.SetLock(true);
+    }
+
+    public void OnSecondary(InputAction.CallbackContext context)
+    {
+        if (context.performed) secondaryWeapons.OnFiringButtonPressed();
+        else if (context.canceled) secondaryWeapons.OnFiringButtonReleased();
     }
 }

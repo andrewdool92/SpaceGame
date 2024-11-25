@@ -13,7 +13,7 @@ public class FighterPassingState : IFighterState
         ship.CutThrusters();
 
         //ship.SetSuperBoost(true);
-        aimPoint = ship.target.position + ship.transform.forward * ship.passDistance * 5 + ship.transform.up * ship.passDistance * 5;
+        aimPoint = ship.target.lockPoint.position + ship.transform.forward * ship.passDistance * 5 + ship.transform.up * ship.passDistance * 5;
         //Debug.DrawLine(ship.transform.position, aimPoint, Color.yellow, 2f);
     }
 

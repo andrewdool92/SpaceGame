@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "3e883529-0380-4cda-b4ef-300a044ab84e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Shoot",
                     "type": "Button",
                     "id": "da7884b5-f659-453c-b99f-e73ae46f23fb",
@@ -78,9 +87,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Brake",
+                    "name": "Secondary",
                     "type": "Button",
-                    "id": "3e883529-0380-4cda-b4ef-300a044ab84e",
+                    "id": "5600ebfd-dae0-4122-85cf-769e083c0aa5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -200,17 +209,6 @@
                 },
                 {
                     "name": "",
-                    "id": "28277770-5d5d-45c1-ba2a-95ef7010f95c",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "012f5323-a475-4fa1-afb6-5566a52ebde8",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
@@ -228,6 +226,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87fb56da-5f1f-4e94-8647-b794eaf6fea7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Secondary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28277770-5d5d-45c1-ba2a-95ef7010f95c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

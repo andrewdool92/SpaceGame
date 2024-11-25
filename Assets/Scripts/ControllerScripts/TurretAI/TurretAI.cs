@@ -1,31 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Weapons;
 
-[RequireComponent(typeof(BlasterController))]
+//[RequireComponent(typeof(BlasterController))]
+[RequireComponent(typeof(WeaponSystem))]
 public class TurretAI : AIController
 {
-    public BlasterController weapons;
-
-    public int burstFireCount;
-    public float burstDelay;
     public float rotationSpeed;
     public float pitchSpeed;
 
+    [Header("Joint constraints")]
     public Transform turretYawJoint;
     public Transform turretPitchJoint;
+    public Vector2 pitchRangeDegrees;
+
+    private Vector3 targetDir = Vector3.zero;
+
+    private IEnumerator firingSequence;
 
 
     public override void Start()
     {
         base.Start();
 
-        weapons = GetComponent<BlasterController>();
+        //weapons = GetComponent<BlasterController>();
+        weapons = GetComponent<WeaponSystem>();
         SetTarget(target);
 
         rotationJoint = turretYawJoint;
 
-        StartCoroutine(TestFire());
+        firingSequence = FireSequence();
+        StartCoroutine(firingSequence);
     }
 
     public override void Update()
@@ -33,55 +41,65 @@ public class TurretAI : AIController
         RotateCannons();
     }
 
-    private IEnumerator TestFire()
+    public override void SetTarget(Targetable target)
     {
-        yield return new WaitForSeconds(2);
+        base.SetTarget(target);
+        weapons.SetAimTransform(target.lockPoint);
+    }
 
-        while (true)
-        {
-            weapons.FireBurst(burstFireCount);
-            yield return new WaitForSeconds(weapons.firingSpeed * burstFireCount + burstDelay);
-        }
+    protected override Vector3 GetAimDirection()
+    {
+        return turretPitchJoint.forward;
+    }
+
+    protected override Vector3 GetScanPoint()
+    {
+        return turretPitchJoint.position + turretPitchJoint.forward * scanPointOffset;
+    }
+
+    protected override bool UpdateTargetLock()
+    {
+        base.UpdateTargetLock();
+        weapons.OnAimAssist(targetLocked, target);
+        return targetLocked;
     }
 
     public void RotateCannons()
     {
-        Vector3 targetDir = weapons.CalculateLeadPoint(turretYawJoint.position, target.position, targetRb.velocity);
+        WeaponData wpn = weapons.GetCurrentWeaponInfo();
+        targetDir = WeaponUtilities.FirstOrderIntercept(turretYawJoint.position, Vector3.zero, wpn.projectileSpeed, target);
         UpdateAimValues(targetDir);
 
         float maxTurn = rotationSpeed * Time.deltaTime;
         float maxPitch = pitchSpeed * Time.deltaTime;
 
         float YawTurnDegrees = Vector3.SignedAngle(Vector3.forward, yawError, Vector3.up);
-        if (Mathf.Abs(YawTurnDegrees) > 90) YawTurnDegrees = (180 * -Mathf.Sign(YawTurnDegrees)) + YawTurnDegrees;
 
         float pitchTurnDegrees = Vector3.SignedAngle(turretPitchJoint.localRotation * Vector3.forward, pitchError, Vector3.right);
 
         turretYawJoint.rotation *= Quaternion.AngleAxis(Mathf.Clamp(YawTurnDegrees, -maxTurn, maxTurn), Vector3.up);
 
-        Debug.DrawRay(turretYawJoint.position - turretYawJoint.right * 25, turretYawJoint.right * 50, Color.green, 0.1f);
-        Debug.DrawRay(turretPitchJoint.position, turretPitchJoint.forward * 500, Color.red, .1f);
+        //Debug.DrawRay(turretYawJoint.position - turretYawJoint.right * 25, turretYawJoint.right * 50, Color.green, 0.1f);
+        //Debug.DrawRay(turretPitchJoint.position, turretPitchJoint.forward * 500, Color.red, .1f);
 
         Quaternion newPitch = turretPitchJoint.rotation * Quaternion.AngleAxis(Mathf.Clamp(pitchTurnDegrees, -maxPitch, maxPitch), Vector3.right);
-        turretPitchJoint.rotation = ClampPitch(newPitch);
+        TryRotatePitch(newPitch);
     }
 
-    private Quaternion ClampPitch(Quaternion newRotation)
+    private void TryRotatePitch(Quaternion newRotation)
     {
         float diff = Vector3.SignedAngle(turretYawJoint.forward, newRotation * Vector3.forward, turretYawJoint.right);
 
-        if (diff > 0)
+        if (diff > pitchRangeDegrees.y || diff < pitchRangeDegrees.x)
         {
-            if (diff < 90)
-            {
-                return turretYawJoint.rotation;
-            }
-            else
-            {
-                return turretYawJoint.rotation * Quaternion.AngleAxis(180, Vector3.right);
-            }
+            return;
         }
+        turretPitchJoint.rotation = newRotation;
+    }
 
-        return newRotation;
+    protected override void OnHealthDestroyed()
+    {
+        weapons.OnFiringButtonReleased();
+        StopCoroutine(firingSequence);
     }
 }

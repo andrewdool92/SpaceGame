@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IWeapon
+public interface IWeapon_OLD
 {
     public abstract void Initialize();
 
@@ -18,12 +18,14 @@ public interface IWeapon
 
     public abstract Transform GetRootTransform();
 
-    public abstract void AddEventListener(IWeaponListener listener);
+    public abstract void AddEventListener(IWeaponListener_OLD listener);
 
-    public abstract void RemoveEventListener(IWeaponListener listener);
+    public abstract void RemoveEventListener(IWeaponListener_OLD listener);
+
+    public abstract void OnAimAssist(bool assist, Transform target);
 }
 
-public interface IWeaponListener
+public interface IWeaponListener_OLD
 {
     public abstract void OnAmmoEmpty();
 }
