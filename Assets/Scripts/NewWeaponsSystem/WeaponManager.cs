@@ -72,7 +72,11 @@ namespace Weapons
 
         public static IWeapon InitializeWeapon(WeaponSystem weaponSystem, WeaponData data)
         {
-            return SimpleBlaster.Instantiate(weaponSystem, data);
+            if (data.triggerBehaviour == WeaponData.HoldTriggerBehaviour.MULTILOCK)
+            {
+                // make a new weapon type for this
+            }
+            return new SimpleBlaster(weaponSystem, data);
         }
     }
 }

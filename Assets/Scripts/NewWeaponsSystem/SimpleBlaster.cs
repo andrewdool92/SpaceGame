@@ -22,18 +22,28 @@ namespace Weapons
         private bool firing = false;
         private bool waiting = false;
 
-        private SimpleBlaster() { }
-        public static SimpleBlaster Instantiate(WeaponSystem weaponSystem, WeaponData data)
+        //private SimpleBlaster() { }
+        //public static SimpleBlaster Instantiate(WeaponSystem weaponSystem, WeaponData data)
+        //{
+        //    SimpleBlaster blaster = new SimpleBlaster();
+        //    blaster.weaponSystem = weaponSystem;
+        //    blaster.weaponData = data;
+        //    (blaster.muzzleFlare, blaster.explosion) = WeaponManager.GetParticleEffects(data);
+
+        //    blaster.projectilePool = WeaponManager.GenerateProjectilePool<BaseProjectile>(data.projectileTemplate, data.maxProjectiles, blaster, data);
+        //    blaster.impactDecalPool = WeaponManager.GeneratePool<ImpactDecal>(data.blastMark, data.maxProjectiles);
+
+        //    return blaster;
+        //}
+
+        public SimpleBlaster(WeaponSystem system, WeaponData data)
         {
-            SimpleBlaster blaster = new SimpleBlaster();
-            blaster.weaponSystem = weaponSystem;
-            blaster.weaponData = data;
-            (blaster.muzzleFlare, blaster.explosion) = WeaponManager.GetParticleEffects(data);
+            weaponSystem = system;
+            weaponData = data;
+            (muzzleFlare, explosion) = WeaponManager.GetParticleEffects(data);
 
-            blaster.projectilePool = WeaponManager.GenerateProjectilePool<BaseProjectile>(data.projectileTemplate, data.maxProjectiles, blaster, data);
-            blaster.impactDecalPool = WeaponManager.GeneratePool<ImpactDecal>(data.blastMark, data.maxProjectiles);
-
-            return blaster;
+            projectilePool = WeaponManager.GenerateProjectilePool<BaseProjectile>(data.projectileTemplate, data.maxProjectiles, this, data);
+            impactDecalPool = WeaponManager.GeneratePool<ImpactDecal>(data.blastMark, data.maxProjectiles);
         }
 
         public void OnTriggerHold()
