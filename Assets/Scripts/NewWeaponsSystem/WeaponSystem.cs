@@ -151,6 +151,19 @@ namespace Weapons
             aimTransform = point;
         }
 
+        public async void SetTarget(Targetable target)
+        {
+            while (weapons == null)
+            {
+                await Task.Delay(10);
+            }
+
+            foreach(IWeapon weapon in weapons)
+            {
+                weapon.AssignTarget(target);
+            }
+        }
+
         public Vector3 GetFiringDirection(Transform firingPoint, WeaponData data)
         {
             if (assisting)

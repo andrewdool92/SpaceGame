@@ -17,6 +17,7 @@ public class Destructible : MonoBehaviour, IDamageable
     public float shardTorqueModifier = 400f;
 
     public GameObject baseModel;
+    public Collider baseCollider;
     private Rigidbody rb;
 
     public ShieldController shield;

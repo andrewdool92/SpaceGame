@@ -22,6 +22,9 @@ namespace Weapons
         private bool firing = false;
         private bool waiting = false;
 
+        private Targetable target;
+        private bool targetSet = false;
+
         //private SimpleBlaster() { }
         //public static SimpleBlaster Instantiate(WeaponSystem weaponSystem, WeaponData data)
         //{
@@ -92,8 +95,18 @@ namespace Weapons
         {
             WeaponHardpoint hardpoint = weaponSystem.GetWeaponHardpoint();
             Vector3 dir = weaponSystem.GetFiringDirection(hardpoint.transform, weaponData);
+            BaseProjectile proj = projectilePool.Get();
 
-            projectilePool.Get().Launch(hardpoint.transform.position, dir, weaponSystem.GetDefaultAimPoint());
+            if (targetSet)
+            {
+                proj.Launch(hardpoint.transform.position, dir, target);
+            }
+            else
+            {
+                proj.Launch(hardpoint.transform.position, dir, weaponSystem.GetDefaultAimPoint());
+            }
+
+            //projectilePool.Get().Launch(hardpoint.transform.position, dir, weaponSystem.GetDefaultAimPoint());
             muzzleFlare.PlayAtLocation(hardpoint.transform.position, hardpoint.transform.rotation);
             hardpoint.PlayAnimation();
         }
@@ -125,14 +138,15 @@ namespace Weapons
             throw new NotImplementedException();
         }
 
-        void IWeapon.AssignTarget()
+        void IWeapon.AssignTarget(Targetable target)
         {
-            throw new NotImplementedException();
+            this.target = target;
+            targetSet = true;
         }
 
         void IWeapon.ClearTargets()
         {
-            throw new NotImplementedException();
+            targetSet = false;
         }
     }
 }

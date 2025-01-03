@@ -20,6 +20,8 @@ MonoBehaviour:
     type: 3}
   maxProjectiles: 20
   firingDelay: 200
+  multitargetDelay: 50
+  maxTargets: 1
   maxAmmo: 0
   damage: 1
   blastPower: 1
@@ -28,11 +30,14 @@ MonoBehaviour:
   detonationRange: 0
   projectileRange: 150
   projectileSpeed: 40
-  maxError: 3
+  maxError: 1
   homing: 0
-  fuelRange: 0
+  fuelTime: 0
   fuelAccelleration: 1
+  turnAccelleration: 0
   turnSpeed: 0
+  preciseTurnSpeed: 0
+  maxVelocity: 0
   blastMark: {fileID: 4165884512928924104, guid: ff88704302e968049b4182fc5681b76c,
     type: 3}
   blastMarkSizeRange: {x: 0.5, y: 1}

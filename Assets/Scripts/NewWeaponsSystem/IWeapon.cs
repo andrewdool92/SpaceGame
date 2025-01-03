@@ -17,7 +17,7 @@ namespace Weapons
         public abstract void RemoveEventListener(IWeaponListener listener);
         public abstract void OnSystemDestroyed();
         public abstract void OnWeaponSwapped();
-        public abstract void AssignTarget();
+        public abstract void AssignTarget(Targetable target);
         public abstract void ClearTargets();
     }
 

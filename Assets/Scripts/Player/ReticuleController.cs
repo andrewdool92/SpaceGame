@@ -35,13 +35,15 @@ public class ReticuleController : MonoBehaviour
 
     private WeaponSystem[] weapons;
 
-    private delegate void OnFixedUpdate();
-    private OnFixedUpdate onFixedUpdate;
+    private delegate void OnUpdate();
+    private OnUpdate onFixedUpdate;
+    private OnUpdate onLateUpdate;
 
 
     private void Awake()
     {
         onFixedUpdate = () => { };
+        onLateUpdate = () => { };
         canvasRect = canvas.GetComponent<RectTransform>();
     }
 
@@ -53,16 +55,12 @@ public class ReticuleController : MonoBehaviour
     private void FixedUpdate()
     {
         onFixedUpdate();
-        //Scan();
-        //UpdateTargetLock();
-        //UpdateReticulePosition();
-        //UpdateCrosshairPosition();
     }
 
-    //private void LateUpdate()
-    //{
-
-    //}
+    private void OnGUI()
+    {
+        onLateUpdate();
+    }
 
     public void AssignWeapons(WeaponSystem mainWeapons, WeaponSystem secondaryWeapons)
     {
@@ -75,6 +73,10 @@ public class ReticuleController : MonoBehaviour
         {
             Scan();
             UpdateTargetLock();
+        };
+
+        onLateUpdate = () =>
+        {
             UpdateReticulePosition();
             UpdateCrosshairPosition();
         };

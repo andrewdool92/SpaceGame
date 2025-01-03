@@ -226,7 +226,7 @@ MonoBehaviour:
   hardpoints:
   - {fileID: 7545236247825604421}
   - {fileID: 2485287226322300084}
-  lockTarget: {fileID: 0}
+  assistTarget: {fileID: 0}
   assistDegrees: 0
 --- !u!1 &939370243726855391
 GameObject:
@@ -330,7 +330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2d6b788a5bb4540b2a109cf2ebe450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapons: {fileID: 1351999331506515528}
+  mainWeapons: {fileID: 0}
+  secondaryWeapons: {fileID: 0}
   reticuleController: {fileID: 3110863687270979980}
   deadZone: 50
   fineTuneRange: 200
@@ -407,6 +408,7 @@ MonoBehaviour:
   explosionForceRange: {x: 10, y: 20}
   shardTorqueModifier: 40
   baseModel: {fileID: 2211848086299419267}
+  baseCollider: {fileID: 0}
   shield: {fileID: 4501927686871207382}
   mainExplosionDelay: 0
   explosionFX: {fileID: 5561185716382115569}
@@ -773,6 +775,7 @@ GameObject:
   m_Component:
   - component: {fileID: 856479467666763933}
   - component: {fileID: 6764383057522100305}
+  - component: {fileID: 772388753693197867}
   - component: {fileID: 2964894449737450474}
   - component: {fileID: 4290181951812127457}
   m_Layer: 0
@@ -805,6 +808,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6550377782167959918}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &772388753693197867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6550377782167959918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430548f10f1719944aea19fd14cb71c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentObject: {fileID: 7875353884154809320}
 --- !u!23 &2964894449737450474
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -953,7 +969,7 @@ MonoBehaviour:
   hardpoints:
   - {fileID: 8978296934041586511}
   - {fileID: 5463075320174507571}
-  lockTarget: {fileID: 0}
+  assistTarget: {fileID: 0}
   assistDegrees: 0
 --- !u!1 &7569002449129474826
 GameObject:
@@ -1256,7 +1272,7 @@ PrefabInstance:
     - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.x
-      value: -59.1
+      value: -117.8
       objectReference: {fileID: 0}
     - target: {fileID: 7656379355206588399, guid: 3d031bbdd58ebbf4f8007c9aef88193b,
         type: 3}

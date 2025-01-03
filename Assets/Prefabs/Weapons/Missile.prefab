@@ -48,8 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 6028427522752554095}
-  trail: {fileID: 924909826508368142}
-  newTrail: {fileID: 2171861649712521465}
+  trail: {fileID: 2171861649712521465}
 --- !u!1 &6028427522752554095
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,7 +66,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7429056197616945855
 Transform:
   m_ObjectHideFlags: 0

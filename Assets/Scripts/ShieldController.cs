@@ -29,6 +29,7 @@ public class ShieldController : MonoBehaviour, IDamageable
         alive = true;
 
         TryGetComponent<Destructible>(out hull);
+        SetBodyColliders(false);
     }
 
     private void Update()

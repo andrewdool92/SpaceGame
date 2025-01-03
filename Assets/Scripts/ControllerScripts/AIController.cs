@@ -263,7 +263,6 @@ public class AIController : MonoBehaviour
             {
                 while (!CheckClearShot() || !UpdateTargetLock())
                 {
-                    Debug.Log("No clear shot");
                     yield return new WaitForSeconds(checkDelay);
                 }
 

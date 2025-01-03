@@ -1,11 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Weapons;
 
-//[RequireComponent(typeof(BlasterController))]
 [RequireComponent(typeof(WeaponSystem))]
 public class TurretAI : AIController
 {
@@ -26,7 +22,6 @@ public class TurretAI : AIController
     {
         base.Start();
 
-        //weapons = GetComponent<BlasterController>();
         weapons = GetComponent<WeaponSystem>();
         SetTarget(target);
 
@@ -45,6 +40,7 @@ public class TurretAI : AIController
     {
         base.SetTarget(target);
         weapons.SetAimTransform(target.lockPoint);
+        weapons.SetTarget(target);
     }
 
     protected override Vector3 GetAimDirection()

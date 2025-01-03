@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace Weapons
@@ -75,21 +74,28 @@ namespace Weapons
         {
             if (hit.transform.IsChildOf(rootTransform)) return;
 
-            HandleCollisionDamage(hit);
+            HandleCollision(hit);
         }
 
-        protected virtual void HandleCollisionDamage(RaycastHit hit)
+        protected virtual void HandleCollision(RaycastHit hit)
         {
-            Vector3 velocity = transform.forward * speed;
-            DamageInstance damageInstance = weaponData.GetDamageInstance(hit.point, velocity);
-
-            if (hit.transform.TryGetComponent<IDamageable>(out IDamageable target))
+            if (weaponData.blastRadius != 0f)
             {
-                target.Damage(damageInstance);
+                Detonate();
             }
-            else if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody body))
+            else
             {
-                body.AddForceAtPosition(hit.point, velocity.normalized * damageInstance.blastPower);
+                Vector3 velocity = transform.forward * speed;
+                DamageInstance damageInstance = weaponData.GetDamageInstance(hit.point, velocity);
+
+                if (hit.transform.TryGetComponent<IDamageable>(out IDamageable target))
+                {
+                    target.Damage(damageInstance);
+                }
+                else if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody body))
+                {
+                    body.AddForceAtPosition(hit.point, velocity.normalized * damageInstance.blastPower);
+                }
             }
 
             launcher.PlayHitEffect(hit.point);
@@ -113,6 +119,36 @@ namespace Weapons
 
         protected virtual void EndOfLife()
         {
+            if (weaponData.blastRadius != 0f)
+            {
+                Detonate();
+            }
+
+            Disable();
+        }
+
+        protected void Detonate()
+        {
+            DamageInstance damage = weaponData.GetDamageInstance(transform.position, transform.forward * speed);
+            IDamageable target;
+            Rigidbody rb;
+
+            Collider[] targets = Physics.OverlapSphere(transform.position, damage.blastRadius);
+            foreach (Collider collider in targets)
+            {
+                Debug.Log(collider.gameObject.name);
+                if (collider.gameObject.TryGetComponent<IDamageable>(out target))
+                {
+                    Debug.Log($"Dealing explosive damage to {target}");
+                    target.Damage(damage);
+                }
+                else if (collider.gameObject.TryGetComponent<Rigidbody>(out rb))
+                {
+                    rb.AddExplosionForce(damage.blastPower, damage.hitPoint, damage.blastRadius);
+                }
+            }
+
+            launcher.PlayHitEffect(transform.position);
             Disable();
         }
 

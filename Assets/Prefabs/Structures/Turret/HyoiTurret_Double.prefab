@@ -626,15 +626,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  scanPointOffset: {x: 0, y: 0, z: 1}
+  scanPointOffset: 2
   minScanRange: 30
   minScanAngle: 30
   maxScanAngle: 90
   maxScanAngleVelocity: 40
   scanPrecision: 2
+  targetLockAngle: 15
   clearShotRadius: 0.7
   rotationJoint: {fileID: 0}
-  newWeapons: {fileID: 8427395463333240130}
+  weapons: {fileID: 0}
   burstFireCount: 4
   burstDelay: 3
   rotationSpeed: 20
@@ -683,6 +684,7 @@ MonoBehaviour:
   explosionForceRange: {x: 1000, y: 2000}
   shardTorqueModifier: 400
   baseModel: {fileID: 8192973707428782335}
+  baseCollider: {fileID: 6185113390287436082}
   shield: {fileID: 0}
   mainExplosionDelay: 0
   explosionFX: {fileID: 199959410349545395}
