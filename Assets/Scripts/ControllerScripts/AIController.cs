@@ -172,7 +172,7 @@ public class AIController : MonoBehaviour
     {
         Vector3 scanOrigin = transform.position + transform.forward * scanPointOffset;
 
-        float currentSpeed = rb.velocity.magnitude;
+        float currentSpeed = rb.linearVelocity.magnitude;
         obstacleReport.scanRange = (minScanRange * scanRangeModifier) + currentSpeed;
         obstacleReport.scanAngle = Mathf.Lerp(maxScanAngle, minScanAngle, currentSpeed / maxScanAngleVelocity);
 

@@ -43,8 +43,8 @@ public class Shard : MonoBehaviour
 
         rb.detectCollisions = true;
         rb.useGravity = false;
-        rb.angularDrag = 0.05f;
-        rb.drag = 1;
+        rb.angularDamping = 0.05f;
+        rb.linearDamping = 1;
 
         shardCollider.enabled = true;
 

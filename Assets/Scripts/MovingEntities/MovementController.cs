@@ -55,7 +55,7 @@ public class MovementController : MonoBehaviour
 
         foreach (VisualEffect thruster in forwardThrusters)
         {
-            thruster.SetVector3(velocityID, rb.velocity);
+            thruster.SetVector3(velocityID, rb.linearVelocity);
         }
 
         if (boosting)
@@ -67,16 +67,16 @@ public class MovementController : MonoBehaviour
             rb.AddRelativeForce(movementValues, ForceMode.Acceleration);
         }
 
-        if (rb.velocity.sqrMagnitude > currentSpeedCap * currentSpeedCap)
+        if (rb.linearVelocity.sqrMagnitude > currentSpeedCap * currentSpeedCap)
         {
-            rb.AddForce(-rb.velocity.normalized * (rb.velocity.magnitude - currentSpeedCap), ForceMode.Acceleration);
+            rb.AddForce(-rb.linearVelocity.normalized * (rb.linearVelocity.magnitude - currentSpeedCap), ForceMode.Acceleration);
         }
     }
 
     private void ApplyBoostForce()
     {
         Vector3 boostForce = movementValues;
-        Vector3 localVelocity = Quaternion.Inverse(transform.rotation) * rb.velocity;
+        Vector3 localVelocity = Quaternion.Inverse(transform.rotation) * rb.linearVelocity;
 
         boostForce.y = -localVelocity.y;
         boostForce.x = -localVelocity.x;
@@ -169,12 +169,12 @@ public class MovementController : MonoBehaviour
 
     public void SetBrake(bool braking)
     {
-        rb.drag = braking ? brakeDrag : 0;
+        rb.linearDamping = braking ? brakeDrag : 0;
     }
 
     public void SetLock(bool locked)
     {
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         movementValues = Vector3.zero;
         rotationValues = Vector3.zero;

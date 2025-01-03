@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void OnApplicationStart()
+    public static async void OnApplicationStart()
     {
         var activeScene = SceneManager.GetActiveScene();
         if (activeScene.name != "PersistentScene")
         {
-            SceneManager.LoadScene("PersistentScene", LoadSceneMode.Additive);
+            await SceneManager.LoadSceneAsync("PersistentScene", LoadSceneMode.Additive);
         }
     }
 }

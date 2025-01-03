@@ -73,7 +73,7 @@ public class Destructible : MonoBehaviour, IDamageable
             shield.alive = false;
         }
 
-        explosionFX.SetVector3("RigidbodyVelocity", rb.velocity);
+        explosionFX.SetVector3("RigidbodyVelocity", rb.linearVelocity);
         explosionFX.Play();
 
         baseModel.SetActive(false);
@@ -106,7 +106,7 @@ public class Destructible : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(mainExplosionDelay);
 
-        explosionFX.SetVector3("RigidbodyVelocity", rb.velocity);
+        explosionFX.SetVector3("RigidbodyVelocity", rb.linearVelocity);
         explosionFX.Play();
 
         baseModel.SetActive(false);

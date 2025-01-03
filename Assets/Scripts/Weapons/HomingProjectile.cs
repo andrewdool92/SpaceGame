@@ -54,7 +54,7 @@ public class HomingProjectile : Projectile
             
             if (targetLocked)
             {
-                Vector3 targetPosition = WeaponUtilities.FirstOrderIntercept(transform.position, Vector3.zero, velocity.magnitude, target.position, target.velocity);
+                Vector3 targetPosition = WeaponUtilities.FirstOrderIntercept(transform.position, Vector3.zero, velocity.magnitude, target.position, target.linearVelocity);
                 Vector3 targetDir = targetPosition - transform.position;
                 transform.forward = Vector3.RotateTowards(transform.forward, targetDir, Mathf.Deg2Rad * turnSpeed, 0f);
             }

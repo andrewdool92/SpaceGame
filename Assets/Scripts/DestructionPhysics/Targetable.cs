@@ -40,7 +40,7 @@ public class Targetable : MonoBehaviour
     {
         if (hasRigidBody)
         {
-            return (lockPoint.position, rb.velocity);
+            return (lockPoint.position, rb.linearVelocity);
         }
         return (lockPoint.position, Vector3.zero);
     }

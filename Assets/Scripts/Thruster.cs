@@ -33,7 +33,7 @@ public class Thruster : MonoBehaviour
     {
         if (boosters)
         {
-            thrusterFX.SetVector3(velocityID, shipRigidBody.velocity);
+            thrusterFX.SetVector3(velocityID, shipRigidBody.linearVelocity);
         }
     }
 

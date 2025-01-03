@@ -30,7 +30,7 @@ public class TestTarget : MonoBehaviour
     void FixedUpdate()
     {
         transform.rotation *= Quaternion.AngleAxis(turnSpeed * Time.deltaTime, rotationAxis);
-        rb.velocity = transform.forward * velocity;
+        rb.linearVelocity = transform.forward * velocity;
     }
 
     private IEnumerator Patrol()
