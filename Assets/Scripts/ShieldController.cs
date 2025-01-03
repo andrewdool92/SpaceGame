@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using static UnityEngine.Rendering.DebugUI;
 
-public class ShieldController : MonoBehaviour
+public class ShieldController : MonoBehaviour, IDamageable
 {
     public VisualEffect shieldHit;
     public VisualEffect shieldShatter;
@@ -28,6 +29,7 @@ public class ShieldController : MonoBehaviour
         alive = true;
 
         TryGetComponent<Destructible>(out hull);
+        SetBodyColliders(false);
     }
 
     private void Update()
@@ -45,43 +47,45 @@ public class ShieldController : MonoBehaviour
         rechargeTimer -= Time.deltaTime;
     }
 
-    public float Damage(float value, Vector3 direction)
+    public void Damage(DamageInstance hit)
     {
         rechargeTimer = rechargeDelay;
 
-        if (currentHealth  <= 0f)
+        if (currentHealth <= 0f)
         {
-            return value;
+            hull?.Damage(hit);
+            return;
         }
 
-        float diff = value - currentHealth;
-        currentHealth -= value;
+        float diff = hit.damage - currentHealth;
+        currentHealth -= hit.damage;
+        hit.damage = diff;
 
         if (currentHealth <= 0)
         {
-            shieldHit.Reinit();
-            shieldShatter.SetVector3("CollisionDirection", direction);
-            shieldShatter.Play();
-            shieldCollider.enabled = false;
-            SetBodyColliders(true);
-            return diff;
+            Break(hit);
         }
         else
         {
             shieldHit.SetFloat("HealthPercentage", currentHealth / maxHealth);
             shieldHit.Play();
-            return 0;
         }
+    }
+
+    public void Break(DamageInstance hit)
+    {
+        shieldHit.Reinit();
+        shieldShatter.SetVector3("CollisionDirection", hit.hitVelocity);
+        shieldShatter.Play();
+        shieldCollider.enabled = false;
+        SetBodyColliders(true);
+        hull?.Damage(hit);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        float remaining = Damage(1f, collision.relativeVelocity.normalized);
-
-        if (remaining > 0f)
-        {
-            hull?.Damage(remaining, 400f, 5f, collision.GetContact(0).point, collision.relativeVelocity);
-        }
+        DamageInstance hit = new DamageInstance(1f, 0f, 0f, collision.GetContact(0).point, collision.relativeVelocity);
+        Damage(hit);
     }
 
     public bool IsBroken()

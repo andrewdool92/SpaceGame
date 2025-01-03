@@ -7,24 +7,26 @@ public class Projectile : MonoBehaviour
 {
     public ParticleHitEffect explosionEffect;
     public ImpactDecal blastMark;
-    private LineRenderer trail;
-    private MeshRenderer particle;
+    protected MeshRenderer particle;
     public Vector3 velocity = Vector3.zero;
 
     public Transform rootTransform;
 
-    private Vector3 lastPosition;
+    protected Vector3 lastPosition;
 
     public float range = 0f;
 
-    public Blaster parent;
+    public IWeapon_OLD parent;
 
-    private bool active = false;
+    protected bool active = false;
+
+    public float decalMinSize = .5f;
+    public float decalMaxSize = 3f;
+    public float decalFadeSpeed = .1f;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        trail = GetComponentInChildren<LineRenderer>();
         particle = GetComponentInChildren<MeshRenderer>();
 
         blastMark.Initialize();
@@ -42,22 +44,32 @@ public class Projectile : MonoBehaviour
     {
         if (!active) return;
 
+        Move();
+    }
+
+    protected virtual void Move()
+    {
         transform.position += velocity * Time.deltaTime;
         Vector3 ray = transform.position - lastPosition;
         float dist = ray.magnitude;
 
         if (Physics.Raycast(lastPosition, ray, out RaycastHit hit, Mathf.Min(dist, range)))
         {
-            HandleCollision(hit);
+            CheckCollision(hit);
         }
 
-        range -= dist;
+        CheckLifetime(dist);
+
+        lastPosition = transform.position;
+    }
+
+    protected virtual void CheckLifetime(float delta)
+    {
+        range -= delta;
         if (range <= 0f)
         {
             DisableProjectile();
         }
-
-        lastPosition = transform.position;
     }
 
     public void Fire(Vector3 point, Vector3 velocity, float range)
@@ -69,57 +81,61 @@ public class Projectile : MonoBehaviour
         this.velocity = velocity;
         this.range = range;
 
-        particle.enabled = true;
-        trail.enabled = true;
+        EnableProjectile();
+    }
+
+    protected virtual void EnableProjectile()
+    {
+        particle.gameObject.SetActive(true);
         active = true;
     }
 
-    public void DisableProjectile()
+    protected virtual void DisableProjectile()
     {
         active = false;
-        trail.enabled = false;
-        particle.enabled = false;
+        particle.gameObject.SetActive(false);
     }
 
-    private void HandleCollision(RaycastHit hit)
+    protected virtual void Detonate()
     {
-        //if (hit.transform.root == rootTransform) return;
-        if (hit.transform.IsChildOf(rootTransform)) return;
+        parent.PlayHitEffect(lastPosition);
+        DisableProjectile();
+    }
 
-        explosionEffect.PlayAtLocation(lastPosition);
-        float remainingDamage = parent.damage;
+    protected virtual void HandleCollisionDamage(RaycastHit hit)
+    {
+        DamageInstance damageInstance = parent.GetDamageInstance(hit.point, velocity);
 
-        if (hit.transform.TryGetComponent<ShieldController>(out ShieldController shield))
+        if (hit.transform.TryGetComponent<IDamageable>(out IDamageable target))
         {
-            remainingDamage = shield.Damage(parent.damage, velocity.normalized);
-
-            if (remainingDamage <= 0f) return;
-        }
-        if (hit.transform.TryGetComponent<Destructible>(out Destructible hull))
-        {
-            hull.Damage(remainingDamage, parent.blastPower, parent.blastRadius, hit.point, velocity);
+            target.Damage(damageInstance);
         }
         else if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody body))
         {
-            body.AddForceAtPosition(hit.point, velocity.normalized * parent.blastPower);
+            body.AddForceAtPosition(hit.point, velocity.normalized * damageInstance.blastPower);
         }
 
+        Detonate();
+    }
+
+    private void CheckCollision(RaycastHit hit)
+    {
+        if (hit.transform.IsChildOf(rootTransform)) return;
+
+        HandleCollisionDamage(hit);
         ApplyBlastMark(hit);
-        DisableProjectile();
     }
 
     private void ApplyBlastMark(RaycastHit hit)
     {
-        float decalSize = Random.Range(parent.decalMinSize, parent.decalMaxSize);
+        float decalSize = Random.Range(decalMinSize, decalMaxSize);
 
         blastMark.Apply(decalSize, hit);
     }
 
-    public void SetParent(Blaster parent)
+    public void SetParent(IWeapon_OLD parent)
     {
         this.parent = parent;
-        rootTransform = parent.transform;
-        explosionEffect = parent.explosion;
-        blastMark.fadeSpeed = parent.decalFadeSpeed;
+        rootTransform = parent.GetRootTransform();
     }
 }

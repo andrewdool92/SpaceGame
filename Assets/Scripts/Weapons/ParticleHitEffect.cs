@@ -11,4 +11,11 @@ public class ParticleHitEffect : MonoBehaviour
         transform.position = position;
         sparks.Play();
     }
+
+    public void PlayAtLocation(Vector3 position, Quaternion direction)
+    {
+        transform.position = position;
+        transform.rotation = direction;
+        sparks.Play();
+    }
 }

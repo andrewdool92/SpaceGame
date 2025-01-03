@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Weapons;
 
 public class AIController : MonoBehaviour
 {
-    public Transform target;
-    protected Rigidbody targetRb;
+    public Targetable target;
+    protected bool targetLocked;
     protected Rigidbody rb;
 
     protected Vector3 targetAngle;
@@ -14,7 +15,7 @@ public class AIController : MonoBehaviour
     protected Vector3 yawError;
     protected Vector3 rollError;
 
-    public Vector3 scanPointOffset = Vector3.forward * 2;
+    public float scanPointOffset = 2;
     public float minScanRange = 30f;
 
     public float minScanAngle = 30;
@@ -22,14 +23,26 @@ public class AIController : MonoBehaviour
     public float maxScanAngleVelocity = 40f;
 
     public int scanPrecision = 2;
+    public float targetLockAngle = 15f;
+    public float clearShotRadius = 0f;
 
     protected ObstacleCheck obstacleReport;
 
     public Transform rotationJoint;
 
+    [Header("Weapon settings")]
+    public WeaponSystem weapons;
+    public int burstFireCount;
+    public float burstDelay;
+
+
     private void Awake()
     {
         obstacleReport = new();
+        if (TryGetComponent<Destructible>(out Destructible destructible))
+        {
+            destructible.onDestruction += OnHealthDestroyed;
+        }
     }
 
     // Start is called before the first frame update
@@ -43,15 +56,24 @@ public class AIController : MonoBehaviour
     // Update is called once per frame
     public virtual void Update() { }
 
-    public void SetTarget(Transform target)
+    public virtual void OnDisable()
+    {
+        if (TryGetComponent<Destructible>(out Destructible destructible))
+        {
+            destructible.onDestruction -= OnHealthDestroyed;
+        }
+    }
+
+    protected virtual void OnHealthDestroyed() { }
+
+    public virtual void SetTarget(Targetable target)
     {
         this.target = target;
-        targetRb = target.GetComponent<Rigidbody>();
     }
 
     public void UpdateAimValues()
     {
-        UpdateAimValues(target.position);
+        UpdateAimValues(target.lockPoint.position);
         //targetAngle = target.position - rotationJoint.position;
     }
 
@@ -148,7 +170,7 @@ public class AIController : MonoBehaviour
 
     protected virtual void ScanForObstacles(float scanRangeModifier)
     {
-        Vector3 scanOrigin = transform.position + scanPointOffset;
+        Vector3 scanOrigin = transform.position + transform.forward * scanPointOffset;
 
         float currentSpeed = rb.velocity.magnitude;
         obstacleReport.scanRange = (minScanRange * scanRangeModifier) + currentSpeed;
@@ -197,5 +219,69 @@ public class AIController : MonoBehaviour
         }
 
         return scanHit;
+    }
+
+    protected virtual Vector3 GetScanPoint()
+    {
+        return transform.forward + transform.forward * scanPointOffset;
+    }
+
+    protected virtual Vector3 GetAimDirection()
+    {
+        return transform.forward;
+    }
+
+    protected virtual bool CheckClearShot()
+    {
+        return WeaponUtilities.CheckClearShot(GetScanPoint(), target.transform, GetAimDirection(), clearShotRadius);
+    }
+
+    protected virtual bool UpdateTargetLock()
+    {
+        if (target == null)
+        {
+            targetLocked = false;
+        }
+        else
+        {
+            targetLocked = Vector3.Angle(GetAimDirection(), target.lockPoint.position - transform.position) < targetLockAngle;
+        }
+
+        return targetLocked;
+    }
+
+    protected IEnumerator FireSequence()
+    {
+        WeaponData weaponInfo = weapons.GetCurrentWeaponInfo();
+        float sqrFiringRange = Mathf.Pow(weaponInfo.projectileRange, 2);
+        float checkDelay = weaponInfo.firingDelay / 1000f;
+        yield return new WaitForSeconds(1f);
+
+        while (true)
+        {
+            if ((target.lockPoint.position - transform.position).sqrMagnitude < sqrFiringRange)
+            {
+                while (!CheckClearShot() || !UpdateTargetLock())
+                {
+                    yield return new WaitForSeconds(checkDelay);
+                }
+
+                int fired = 0;
+                weapons.OnFiringButtonPressed();
+
+                while (fired < burstFireCount)
+                {
+                    fired++;
+                    if (!CheckClearShot() || !UpdateTargetLock())
+                    {
+                        break;
+                    }
+                    yield return new WaitForSeconds(checkDelay);
+                }
+
+                weapons.OnFiringButtonReleased();
+                yield return new WaitForSeconds(burstDelay);
+            }
+        }
     }
 }

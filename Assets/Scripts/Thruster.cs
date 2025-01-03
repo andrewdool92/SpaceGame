@@ -7,27 +7,72 @@ public class Thruster : MonoBehaviour
 {
     public TrailRenderer trail;
     public MeshRenderer flare;
-    public Rigidbody parentRb;
+    public MovementController movement;
 
+    public VisualEffect thrusterFX;
+    public Rigidbody shipRigidBody;
+    private int velocityID, boostingID, powerID;
 
-    // Start is called before the first frame update
-    void Start()
+    public Vector3 thrustActivationAngle = Vector3.forward;
+    public Vector3 rotationActivationAngle = Vector3.zero;
+    private bool rotationActivation = false;
+
+    public bool boosters = false;
+
+    private bool movementActive = false, rotationActive = false;
+
+    private void Awake()
     {
-        
+        rotationActivation = rotationActivationAngle == Vector3.zero;
+        velocityID = Shader.PropertyToID("ShipVelocity");
+        boostingID = Shader.PropertyToID("Boosting");
+        powerID = Shader.PropertyToID("ThrusterPower");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        //if (active && Vector3.Angle(parentRb.velocity, transform.forward) < 30)
-        //{
-        //    trail.emitting = true;
-        //}
-        //else
-        //{
-        //    trail.emitting = false;
-        //}
+        if (boosters)
+        {
+            thrusterFX.SetVector3(velocityID, shipRigidBody.velocity);
+        }
     }
+
+    private void OnEnable()
+    {
+        movement.MovementUpdate += OnMovementUpdate;
+        if (rotationActivation) movement.RotationUpdate += OnRotationUpdate;
+        if (boosters)
+        {
+            movement.OnBoost += OnBoostUpdate;
+            trail.gameObject.SetActive(true);
+            trail.emitting = false;
+        }
+    }
+
+    private void OnDisable()
+    {
+        movement.MovementUpdate -= OnMovementUpdate;
+        if (rotationActivation) movement.RotationUpdate -= OnRotationUpdate;
+        if (boosters) movement.OnBoost -= OnBoostUpdate;
+    }
+
+    private void OnMovementUpdate(Vector3 direction)
+    {
+        movementActive = Vector3.Angle(thrustActivationAngle, direction) < 85;
+        SetThrust(movementActive || rotationActive);
+    }
+
+    private void OnRotationUpdate(Vector3 rotation)
+    {
+        rotationActive = Vector3.Angle(rotationActivationAngle, rotation) < 85;
+        SetThrust(movementActive || rotationActive);
+    }
+
+    private void OnBoostUpdate(bool boosting)
+    {
+        SetTrail(boosting);
+    }
+
 
     public void SetThrust(bool value)
     {
@@ -37,9 +82,5 @@ public class Thruster : MonoBehaviour
     public void SetTrail(bool value)
     {
         trail.emitting = value;
-        //if (value)
-        //{
-        //    trail.Clear();
-        //}
     }
 }

@@ -48,21 +48,26 @@ public class BlasterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime;
-        }
+        //if (timer > 0)
+        //{
+        //    timer -= Time.deltaTime;
+        //}
 
-        if (firing && timer <= 0)
-        {
-            timer += firingSpeed;
-            SingleShot();
-        }
+        //if (firing && timer <= 0)
+        //{
+        //    timer += firingSpeed;
+        //    SingleShot();
+        //}
     }
 
-    private void SingleShot()
+    public Transform GetCurrentHardpoint()
     {
-        blaster.Fire(weaponHardpoints[blasterIndex], transform.forward, rb.velocity);
+        return weaponHardpoints[blasterIndex];
+    }
+
+    public void SingleShot()
+    {
+        blaster.Fire(weaponHardpoints[blasterIndex], rb.velocity);
         PlayMuzzleFlare(blasterIndex);
 
         if (animate) weaponAnimations[blasterIndex].SetTrigger(animationTrigger);
@@ -80,15 +85,24 @@ public class BlasterController : MonoBehaviour
         StartCoroutine(FireRounds(rounds));
     }
 
+    public void InterruptBurst()
+    {
+        blaster.ReleaseFire();
+    }
+
     private IEnumerator FireRounds(int rounds)
     {
-        int fired = 0;
-        while (fired < rounds)
-        {
-            SingleShot();
-            fired++;
-            yield return new WaitForSeconds(firingSpeed);
-        }
+        //int fired = 0;
+        //while (fired < rounds)
+        //{
+        //    SingleShot();
+        //    fired++;
+        //    yield return new WaitForSeconds(firingSpeed);
+        //}
+        blaster.StartFire();
+        yield return new WaitForSeconds(blaster.firingSpeed * rounds);
+        yield return new WaitForEndOfFrame();
+        blaster.ReleaseFire();
     }
 
     private void InitializeWeapons()
@@ -103,10 +117,7 @@ public class BlasterController : MonoBehaviour
 
     public Vector3 CalculateLeadPoint(Vector3 firingPoint, Vector3 target, Vector3 targetVelocity, float maxCompensation)
     {
-        float distance = (target - firingPoint).magnitude;
-        float timeToHit = distance / blaster.projectileSpeed;
-
-        return target + targetVelocity * Mathf.Min(timeToHit, maxCompensation);
+        return WeaponUtilities.FirstOrderIntercept(firingPoint, Vector3.zero, blaster.projectileSpeed, target, targetVelocity);
     }
 
     private void PlayMuzzleFlare(int index)

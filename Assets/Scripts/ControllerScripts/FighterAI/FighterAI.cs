@@ -8,7 +8,7 @@ using UnityEngine;
 public class FighterAI : AIController
 {
     private ShipController ship;
-    private BlasterController weapons;
+    private BlasterController OLD_weapons;
 
     public IFighterState currentState;
 
@@ -41,7 +41,7 @@ public class FighterAI : AIController
     {
         base.Start();
         ship = GetComponent<ShipController>();
-        weapons = GetComponent<BlasterController>();
+        OLD_weapons = GetComponent<BlasterController>();
         SetTarget(target);
 
         ship.hull.onDestruction += OnDeath;
@@ -88,8 +88,9 @@ public class FighterAI : AIController
 
     protected void CheckPath()
     {
-        Vector3 directPath = target.position - transform.position;
-        obstacleReport.pathObstruction = Physics.Raycast(transform.position, directPath, directPath.magnitude * 0.9f);
+        //TODO fix
+        //Vector3 directPath = target.position - transform.position;
+        //obstacleReport.pathObstruction = Physics.Raycast(transform.position, directPath, directPath.magnitude * 0.9f);
     }
 
     protected override void ScanForObstacles()
@@ -144,7 +145,8 @@ public class FighterAI : AIController
 
     public void Steer()
     {
-        Steer(weapons.CalculateLeadPoint(transform.position, target.position, targetRb.velocity));
+        // TODO fix
+        //Steer(weapons.CalculateLeadPoint(transform.position, target.position, targetRb.velocity));
     }
 
     public void Steer(Vector3 aimPoint)
@@ -179,19 +181,22 @@ public class FighterAI : AIController
 
     public bool TargetIsAhead()
     {
-        return Vector3.Angle(transform.forward, target.position - transform.position) < 60f;
+        //return Vector3.Angle(transform.forward, target.position - transform.position) < 60f;
+        return true;
     }
 
     public bool TargetLocked()
     {
-        return Vector3.Angle(transform.forward, target.position - transform.position) < lockOnAngle;
+        //return Vector3.Angle(transform.forward, target.position - transform.position) < lockOnAngle;
+        return true;
     }
 
     public float GetTargetDistance()
     {
-        float distance = (transform.position - target.position).magnitude;
+        //float distance = (transform.position - target.position).magnitude;
 
-        return distance;
+        //return distance;
+        return 1f;
     }
 
     public void SetForwardThrusters()
@@ -233,7 +238,7 @@ public class FighterAI : AIController
         if (weaponsReady)
         {
             StartCoroutine(BurstCooldown());
-            weapons.FireBurst(Random.Range(burstRoundsRange.x, burstRoundsRange.y));
+            OLD_weapons.FireBurst(Random.Range(burstRoundsRange.x, burstRoundsRange.y));
         }
     }
 

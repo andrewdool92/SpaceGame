@@ -67,11 +67,11 @@ public class ShipController : MonoBehaviour
     public void UpdateThrusters()
     {
         thrusters.SetForwardThrusters(boosting || superBoosting);
-        thrusters.SetReverseThrusters(reversing);
+        //thrusters.SetReverseThrusters(reversing);
 
-        thrusters.SetStrafe(strafeValue);
-        thrusters.SetUpDown(verticalValue);
-        thrusters.SetRoll(rollValue);
+        //thrusters.SetStrafe(strafeValue);
+        //thrusters.SetUpDown(verticalValue);
+        //thrusters.SetRoll(rollValue);
 
         thrusters.SetSuperBoost(superBoosting);
         if (superBoosting)

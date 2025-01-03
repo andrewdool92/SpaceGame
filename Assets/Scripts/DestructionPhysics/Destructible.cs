@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Destructible : MonoBehaviour
+public class Destructible : MonoBehaviour, IDamageable
 {
     public float maxHealth;
     [SerializeField] private float currentHealth;
@@ -18,9 +17,11 @@ public class Destructible : MonoBehaviour
     public float shardTorqueModifier = 400f;
 
     public GameObject baseModel;
+    public Collider baseCollider;
     private Rigidbody rb;
 
     public ShieldController shield;
+    private bool hasShield = false;
     private bool broken = false;
 
     public float mainExplosionDelay = 0f;
@@ -40,25 +41,46 @@ public class Destructible : MonoBehaviour
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody>();
-        TryGetComponent<ShieldController>(out shield);
+        hasShield = TryGetComponent<ShieldController>(out shield);
 
         if (!lockPoint) lockPoint = transform;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Damage(DamageInstance hit)
     {
-        
-    }
+        if (hasShield && !shield.IsBroken())
+        {
+            shield.Damage(hit);
+            return;
+        }
 
-    public void Damage(float damage, float blastPower, float blastRadius, Vector3 point, Vector3 velocity)
-    {
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth - hit.damage, 0, maxHealth);
+        rb.AddExplosionForce(hit.blastPower, hit.hitPoint, hit.blastRadius);
 
         if (currentHealth <= 0)
         {
-            Shatter(blastRadius, blastPower, point, velocity.normalized);
+            Break(hit);
         }
+    }
+
+    public void Break(DamageInstance hit)
+    {
+        if (broken) return;
+        broken = true;
+
+        if (shield)
+        {
+            shield.alive = false;
+        }
+
+        explosionFX.SetVector3("RigidbodyVelocity", rb.velocity);
+        explosionFX.Play();
+
+        baseModel.SetActive(false);
+
+        if (staticRemains) staticRemains.SetActive(true);
+
+        onDestruction?.Invoke();
     }
 
     public void Shatter(float hitImpactRadius, float hitForce, Vector3 hitPoint, Vector3 hitDirection)
