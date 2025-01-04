@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Weapons;
+using SpaceGame.Utils;
 
 [RequireComponent(typeof(WeaponSystem))]
 public class TurretAI : AIController
@@ -63,7 +64,7 @@ public class TurretAI : AIController
     public void RotateCannons()
     {
         WeaponData wpn = weapons.GetCurrentWeaponInfo();
-        targetDir = WeaponUtilities.FirstOrderIntercept(turretYawJoint.position, Vector3.zero, wpn.projectileSpeed, target);
+        targetDir = WeaponUtilities.FirstOrderIntercept(turretYawJoint.position, Vector3.zero, wpn.projectileSpeed, target.GetPosition(), target.GetVelocity());
         UpdateAimValues(targetDir);
 
         float maxTurn = rotationSpeed * Time.deltaTime;

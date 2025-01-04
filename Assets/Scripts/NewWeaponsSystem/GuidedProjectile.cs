@@ -1,4 +1,5 @@
 using UnityEngine;
+using SpaceGame.Utils;
 
 namespace Weapons
 {
@@ -36,7 +37,7 @@ namespace Weapons
         {
             float turnSpeed = targetLocked ? weaponData.turnSpeed : weaponData.preciseTurnSpeed;
 
-            Vector3 targetPosition = targetSelected ? WeaponUtilities.FirstOrderIntercept(transform.position, Vector3.zero, speed, target) : unlockedPoint;
+            Vector3 targetPosition = targetSelected ? WeaponUtilities.FirstOrderIntercept(transform.position, Vector3.zero, speed, target.GetPosition(), target.GetVelocity()) : unlockedPoint;
             Vector3 targetDir = (targetPosition - transform.position).normalized;
             transform.forward = Vector3.RotateTowards(transform.forward, targetDir, Mathf.Deg2Rad * turnSpeed * deltaTime, 0f);
 

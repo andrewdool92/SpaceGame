@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
+using Weapons;
 
 public class PlayerWeaponSystem : MonoBehaviour, IWeaponListener_OLD
 {

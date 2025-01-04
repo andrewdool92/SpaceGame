@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Targetable : MonoBehaviour
@@ -43,5 +40,15 @@ public class Targetable : MonoBehaviour
             return (lockPoint.position, rb.linearVelocity);
         }
         return (lockPoint.position, Vector3.zero);
+    }
+
+    public Vector3 GetPosition()
+    {
+        return lockPoint.position;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return hasRigidBody ? rb.linearVelocity : Vector3.zero;
     }
 }
