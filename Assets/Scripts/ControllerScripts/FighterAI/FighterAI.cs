@@ -1,12 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ShipController))]
-[RequireComponent(typeof(BlasterController))]
 public class FighterAI : AIController
 {
-    private ShipController ship;
-    private BlasterController OLD_weapons;
+    //private ShipController ship;
+    //private BlasterController OLD_weapons;
 
     public IFighterState currentState;
 
@@ -35,14 +33,16 @@ public class FighterAI : AIController
 
     private Vector3 aimCorrection = Vector3.zero;
 
+    //Must be migrated to the new movement and weapon controller systems
+
     public override void Start()
     {
         base.Start();
-        ship = GetComponent<ShipController>();
-        OLD_weapons = GetComponent<BlasterController>();
+        //ship = GetComponent<ShipController>();
+        //OLD_weapons = GetComponent<BlasterController>();
         SetTarget(target);
 
-        ship.hull.onDestruction += OnDeath;
+        //ship.hull.onDestruction += OnDeath;
 
         currentState = adjusting;
         currentState.EnterState(this);
@@ -52,7 +52,7 @@ public class FighterAI : AIController
 
     private void OnDestroy()
     {
-        ship.hull.onDestruction -= OnDeath;
+        //ship.hull.onDestruction -= OnDeath;
     }
 
     public override void Update()
@@ -98,31 +98,31 @@ public class FighterAI : AIController
         base.ScanForObstacles(scanRangeMod);
         aimCorrection = obstacleReport.GetCorrectionValues();
 
-        ship.verticalValue = aimCorrection.x;
-        ship.strafeValue = -aimCorrection.z;
+        //ship.verticalValue = aimCorrection.x;
+        //ship.strafeValue = -aimCorrection.z;
     }
 
     public void SteerPitch(float pitchAngle)
     {
-        if (aimCorrection.x != 0) ship.pitchValue = aimCorrection.x;
-        else ship.pitchValue = -Mathf.Clamp(pitchAngle, -1, 1);
+        //if (aimCorrection.x != 0) ship.pitchValue = aimCorrection.x;
+        //else ship.pitchValue = -Mathf.Clamp(pitchAngle, -1, 1);
     }
 
     public void SteerRoll(float pitchAngle, float errorAngle)
     {
         if (aimCorrection.z != 0)
         {
-            ship.rollValue = aimCorrection.z;
+            //ship.rollValue = aimCorrection.z;
         }
 
         else if (Mathf.Abs(pitchAngle) > 110f || errorAngle < yawSteeringAngle)
         {
-            ship.rollValue = 0f;
+            //ship.rollValue = 0f;
         }
 
         else
         {
-            ship.rollValue = -Mathf.Clamp(Vector3.SignedAngle(Vector3.up, rollError, Vector3.forward), -1, 1);
+            //ship.rollValue = -Mathf.Clamp(Vector3.SignedAngle(Vector3.up, rollError, Vector3.forward), -1, 1);
         }
     }
 
@@ -130,15 +130,15 @@ public class FighterAI : AIController
     {
         if (aimCorrection.y != 0)
         {
-            ship.yawValue = -aimCorrection.y;
+            //ship.yawValue = -aimCorrection.y;
         }
 
         else if (Mathf.Abs(pitchAngle) > 110f || errorAngle >= yawSteeringAngle)
         {
-            ship.yawValue = 0f;
+            //ship.yawValue = 0f;
         }
 
-        else ship.yawValue = Mathf.Clamp(Vector3.SignedAngle(Vector3.forward, yawError, Vector3.up), -1, 1);
+        //else ship.yawValue = Mathf.Clamp(Vector3.SignedAngle(Vector3.forward, yawError, Vector3.up), -1, 1);
     }
 
     public void Steer()
@@ -161,15 +161,15 @@ public class FighterAI : AIController
         SteerYaw(pitch, errorAngle);
         SteerRoll(pitch, errorAngle);
 
-        ship.UpdateThrusters();
+        //ship.UpdateThrusters();
     }
 
     public void Steer(float pitch, float yaw, float roll)
     {
-        ship.pitchValue = pitch;
-        ship.yawValue = yaw;
-        ship.rollValue = roll;
-        ship.UpdateThrusters();
+        //ship.pitchValue = pitch;
+        //ship.yawValue = yaw;
+        //ship.rollValue = roll;
+        //ship.UpdateThrusters();
     }
 
     public bool EvasiveActionRequired()
@@ -199,36 +199,36 @@ public class FighterAI : AIController
 
     public void SetForwardThrusters()
     {
-        ship.boosting = true;
-        ship.reversing = false;
+        //ship.boosting = true;
+        //ship.reversing = false;
 
-        ship.UpdateThrusters();
+        //ship.UpdateThrusters();
     }
 
     public void SetSuperBoost(bool value)
     {
-        ship.superBoosting = value;
-        scanRangeMod = value ? boostScanModifier : 1f;
+        //ship.superBoosting = value;
+        //scanRangeMod = value ? boostScanModifier : 1f;
 
-        ship.UpdateThrusters();
+        //ship.UpdateThrusters();
     }
 
     public void SetReverse()
     {
-        ship.boosting = false;
-        ship.superBoosting = false;
-        ship.reversing = true;
+        //ship.boosting = false;
+        //ship.superBoosting = false;
+        //ship.reversing = true;
 
-        ship.UpdateThrusters();
+        //ship.UpdateThrusters();
     }
 
     public void CutThrusters()
     {
-        ship.boosting = false;
-        ship.superBoosting = false;
-        ship.reversing = false;
+        //ship.boosting = false;
+        //ship.superBoosting = false;
+        //ship.reversing = false;
 
-        ship.UpdateThrusters();
+        //ship.UpdateThrusters();
     }
 
     public void FireWeapons()
@@ -236,7 +236,7 @@ public class FighterAI : AIController
         if (weaponsReady)
         {
             StartCoroutine(BurstCooldown());
-            OLD_weapons.FireBurst(Random.Range(burstRoundsRange.x, burstRoundsRange.y));
+            //OLD_weapons.FireBurst(Random.Range(burstRoundsRange.x, burstRoundsRange.y));
         }
     }
 
