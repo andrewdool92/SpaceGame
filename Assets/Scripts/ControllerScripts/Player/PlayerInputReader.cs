@@ -18,7 +18,6 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     public int deadZone = 50;
     public int fineTuneRange = 200;
 
-    [SerializeField]
     private bool aiming = false;
     private float minThreshold, maxThreshold;
 
