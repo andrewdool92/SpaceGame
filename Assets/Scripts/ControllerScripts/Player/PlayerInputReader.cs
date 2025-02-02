@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Weapons;
@@ -10,6 +11,9 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     private Destructible ship;
     public WeaponSystem mainWeapons, secondaryWeapons;
     public ReticuleController reticuleController;
+
+    public Material aimCircleMaterial;
+    private int aimMaterialMask;
 
     public int deadZone = 50;
     public int fineTuneRange = 200;
@@ -31,6 +35,8 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
 
         movement = GetComponent<MovementController>();
         ship = GetComponent<Destructible>();
+
+        aimMaterialMask = Shader.PropertyToID("_CursorPosition");
     }
 
     // Start is called before the first frame update
@@ -81,8 +87,12 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
 
     public void OnAim(InputAction.CallbackContext context)
     {
-        Vector2 aimValue = context.ReadValue<Vector2>() - screenCentre;
+        Vector2 mousePos = context.ReadValue<Vector2>();
+        Vector2 aimValue = mousePos - screenCentre;
         float sqrMagnitude = aimValue.sqrMagnitude;
+
+        aimCircleMaterial.SetVector(aimMaterialMask, aimValue);
+        //Debug.Log($"{mousePos} : {aimCircleMaterial.GetVector(aimMaterialMask)}");
 
         if (sqrMagnitude < minThreshold)
         {

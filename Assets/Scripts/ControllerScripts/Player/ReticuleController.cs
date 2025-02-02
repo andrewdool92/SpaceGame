@@ -1,8 +1,10 @@
 using Cinemachine;
+using SpaceGame.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Weapons;
 
@@ -39,7 +41,6 @@ public class ReticuleController : MonoBehaviour
     private OnUpdate onFixedUpdate;
     private OnUpdate onLateUpdate;
 
-
     private void Awake()
     {
         onFixedUpdate = () => { };
@@ -47,19 +48,26 @@ public class ReticuleController : MonoBehaviour
         canvasRect = canvas.GetComponent<RectTransform>();
     }
 
+    private void Start()
+    {
+        canvas.worldCamera = CameraUtils.UICamera;
+    }
+
     private void OnEnable()
     {
-        //CinemachineCore.CameraUpdatedEvent.AddListener(UpdateCrosshairPosition);
+        CinemachineCore.CameraUpdatedEvent.AddListener(UpdateCrosshairPosition);
+        CinemachineCore.CameraUpdatedEvent.AddListener(UpdateReticulePosition);
+    }
+
+    private void OnDisable()
+    {
+        CinemachineCore.CameraUpdatedEvent.RemoveListener(UpdateCrosshairPosition);
+        CinemachineCore.CameraUpdatedEvent.RemoveListener(UpdateReticulePosition);
     }
 
     private void FixedUpdate()
     {
         onFixedUpdate();
-    }
-
-    private void OnGUI()
-    {
-        onLateUpdate();
     }
 
     public void AssignWeapons(WeaponSystem mainWeapons, WeaponSystem secondaryWeapons)
@@ -73,12 +81,6 @@ public class ReticuleController : MonoBehaviour
         {
             Scan();
             UpdateTargetLock();
-        };
-
-        onLateUpdate = () =>
-        {
-            UpdateReticulePosition();
-            UpdateCrosshairPosition();
         };
     }
 
@@ -170,8 +172,6 @@ public class ReticuleController : MonoBehaviour
         }
     }
 
-    private delegate void UpdateElement();
-
     private void UpdateReticulePosition()
     {
         if (!targetLocked) return;
@@ -179,9 +179,19 @@ public class ReticuleController : MonoBehaviour
         reticule.anchoredPosition = WorldToCanvasPosition(target.position);
     }
 
+    private void UpdateReticulePosition(Cinemachine.CinemachineBrain cinemachineBrain)
+    {
+        UpdateReticulePosition();
+    }
+
     private void UpdateCrosshairPosition()
     {
         crosshair.anchoredPosition = WorldToCanvasPosition(aimTransform.position);
+    }
+
+    private void UpdateCrosshairPosition(Cinemachine.CinemachineBrain cinemachineBrain)
+    {
+        UpdateCrosshairPosition();
     }
 
     private Vector2 WorldToCanvasPosition(Vector3 position)

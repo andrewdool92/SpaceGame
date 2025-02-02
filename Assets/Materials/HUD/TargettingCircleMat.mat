@@ -38,15 +38,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CursorMaskRadius: 75
     - _DecalMeshBiasType: 0
     - _DecalMeshDepthBias: 0
     - _DecalMeshViewBias: 0
     - _DrawOrder: 0
-    - _LineWidth: 2
+    - _FadePower: 2
+    - _LineWidth: 3
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Radius: 75
     m_Colors:
+    - _CursorPosition: {r: -960, g: -540, b: 0, a: 0}
     - _LineColor: {r: 0.37274882, g: 1.9622638, b: 0, a: 0.49019608}
     - _TargetPosition: {r: 0, g: 0, b: 0, a: 0}
     - _Vector3: {r: 0, g: 0, b: 0, a: 0}

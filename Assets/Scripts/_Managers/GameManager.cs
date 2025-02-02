@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+namespace SpaceGame.Managers
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static async void OnApplicationStart()
+    public class GameManager : MonoBehaviour
     {
-        var activeScene = SceneManager.GetActiveScene();
-        if (activeScene.name != "PersistentScene")
-        {
-            await SceneManager.LoadSceneAsync("PersistentScene", LoadSceneMode.Additive);
-        }
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        //public static async void OnApplicationStart()
+        //{
+        //    var activeScene = SceneManager.GetActiveScene();
+        //    if (activeScene.name != "PersistentScene")
+        //    {
+        //        await SceneManager.LoadSceneAsync("PersistentScene", LoadSceneMode.Additive);
+        //    }
+        //}
     }
 }

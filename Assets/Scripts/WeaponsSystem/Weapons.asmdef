@@ -1,6 +1,6 @@
 {
     "name": "Weapons",
-    "rootNamespace": "",
+    "rootNamespace": "SpaceGame.Weapons",
     "references": [
         "GUID:29d7796fd0a329c40a6c706b8f9ed5e8",
         "GUID:a7b9c8c6bdbecc54f8d239e0ce7f2dd9",
