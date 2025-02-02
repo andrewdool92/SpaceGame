@@ -38,12 +38,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CursorMaskRadius: 75
+    - _CursorMaskRadius: 200
     - _DecalMeshBiasType: 0
     - _DecalMeshDepthBias: 0
     - _DecalMeshViewBias: 0
     - _DrawOrder: 0
-    - _FadePower: 2
+    - _FadePower: 4
     - _LineWidth: 3
     - _QueueControl: 0
     - _QueueOffset: 0

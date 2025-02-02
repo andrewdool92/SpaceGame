@@ -13,6 +13,11 @@ public class ImpactDecal : MonoBehaviour
 
     private bool fading = false;
 
+    private void Start()
+    {
+        SetFadeValue(0f);
+    }
+
     // Async caused errors on application closed; switched to coroutines, which die with the gameobject
     private async void FadeAsync()
     {
@@ -57,6 +62,7 @@ public class ImpactDecal : MonoBehaviour
         inner.fadeFactor = fadeValue;
     }
 
+    // This was used by the old system but should probably be removed
     public void Initialize()
     {
         SetFadeValue(0f);

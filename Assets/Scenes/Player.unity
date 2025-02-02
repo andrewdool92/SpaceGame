@@ -380,6 +380,11 @@ PrefabInstance:
       objectReference: {fileID: 1235780318}
     - target: {fileID: 689386432732346633, guid: 247cb5ece7b3b0c4db14f830e861c2d5,
         type: 3}
+      propertyPath: deadZone
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 689386432732346633, guid: 247cb5ece7b3b0c4db14f830e861c2d5,
+        type: 3}
       propertyPath: mainWeapons
       value: 
       objectReference: {fileID: 1235780318}
