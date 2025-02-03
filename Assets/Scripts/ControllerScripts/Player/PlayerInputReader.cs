@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Weapons;
@@ -86,7 +85,7 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
         //movement.SetBoost(context.performed);
     }
 
-    public void OnAim(InputAction.CallbackContext context)
+    public void OnMouse(InputAction.CallbackContext context)
     {
         Vector2 mousePos = context.ReadValue<Vector2>();
         Vector2 aimValue = mousePos - screenCentre;
@@ -115,6 +114,11 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
         movement.SetPitch(-aimValue.y);
         movement.SetYaw(aimValue.x);
         aiming = true;
+    }
+
+    public void OnLeftStick(InputAction.CallbackContext context)
+    {
+
     }
 
     public void OnRoll(InputAction.CallbackContext context)
@@ -148,5 +152,10 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     {
         if (context.performed) secondaryWeapons.OnFiringButtonPressed();
         else if (context.canceled) secondaryWeapons.OnFiringButtonReleased();
+    }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        throw new System.NotImplementedException();
     }
 }

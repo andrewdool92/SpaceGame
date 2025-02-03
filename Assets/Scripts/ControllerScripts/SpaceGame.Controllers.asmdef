@@ -1,6 +1,6 @@
 {
     "name": "Controllers",
-    "rootNamespace": "",
+    "rootNamespace": "SpaceGame.Controllers",
     "references": [
         "GUID:0be34afff66e800408845d540de32246",
         "GUID:29d7796fd0a329c40a6c706b8f9ed5e8",

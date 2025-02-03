@@ -6,10 +6,19 @@
             "id": "da3397b0-20be-4760-ad54-3f64f9163701",
             "actions": [
                 {
-                    "name": "Aim",
+                    "name": "Mouse",
                     "type": "Value",
                     "id": "25fed26b-dd12-456c-b2fc-1dc6ea315ef1",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LeftStick",
+                    "type": "Value",
+                    "id": "acc0c0a7-c39a-4ef6-92e9-92f6a76aea8e",
+                    "expectedControlType": "Stick",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -36,7 +45,7 @@
                     "name": "Up",
                     "type": "Button",
                     "id": "164a6c83-9174-4194-b476-7797899a863c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -54,7 +63,7 @@
                     "name": "Boost",
                     "type": "Button",
                     "id": "50777de6-ab90-473f-92bc-6aca16711821",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -63,7 +72,7 @@
                     "name": "Forward",
                     "type": "Button",
                     "id": "5970ef25-1617-4d29-bc96-31963dfa39bc",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -72,7 +81,7 @@
                     "name": "Brake",
                     "type": "Button",
                     "id": "3e883529-0380-4cda-b4ef-300a044ab84e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -81,7 +90,7 @@
                     "name": "Shoot",
                     "type": "Button",
                     "id": "da7884b5-f659-453c-b99f-e73ae46f23fb",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -90,7 +99,16 @@
                     "name": "Secondary",
                     "type": "Button",
                     "id": "5600ebfd-dae0-4122-85cf-769e083c0aa5",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "3d06e846-c74b-4a78-9784-ce61d8553227",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -104,7 +122,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Aim",
+                    "action": "Mouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -120,6 +138,17 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "negative",
+                    "id": "f29f7cd8-35ea-4bf1-9050-fab1e5026a9c",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "positive",
                     "id": "9f956ee5-db32-4592-a49e-da3280a1df01",
                     "path": "<Keyboard>/q",
@@ -131,9 +160,31 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Gamepad",
+                    "id": "7befb954-d54e-47db-98f2-de7d3f28007c",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "negative",
-                    "id": "f29f7cd8-35ea-4bf1-9050-fab1e5026a9c",
-                    "path": "<Keyboard>/e",
+                    "id": "9696c112-ffeb-458f-b12c-a626b0ec2e25",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "cf88d380-f009-4dbc-b0c4-cb089e455a5f",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -209,8 +260,30 @@
                 },
                 {
                     "name": "",
+                    "id": "9fedd24f-ab86-491e-b48e-d92b1554edf7",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "012f5323-a475-4fa1-afb6-5566a52ebde8",
                     "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Boost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7da2c860-6266-4a26-a20b-3a64925b259e",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -231,8 +304,30 @@
                 },
                 {
                     "name": "",
+                    "id": "2f12ec1d-3d5f-4685-8a64-ea077a09681c",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "87fb56da-5f1f-4e94-8647-b794eaf6fea7",
                     "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Secondary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2be828db-633b-4708-bf16-68a666f70626",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -248,6 +343,89 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89102700-df78-4cf2-beed-3da1e77719ff",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2190bdff-6b72-428e-8d8d-848863dab7e1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "374c67f1-cc7b-4544-94c0-bd2bd4d4e0ce",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "546f5d9a-9101-4b7c-85b9-e7a1ac3fe127",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftStick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "d9367547-6da9-4392-b6b0-e12d52a41c60",
+            "actions": [
+                {
+                    "name": "Resume",
+                    "type": "Button",
+                    "id": "439259df-1a60-40ab-b6d0-b7bd88c0e5b3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c5fc68bc-f5f5-424e-9b09-d4b9da8b8ee2",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Resume",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96002126-1230-497d-96b2-7f83c55e9363",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Resume",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

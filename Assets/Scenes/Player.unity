@@ -408,6 +408,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1604961908728643155, guid: 247cb5ece7b3b0c4db14f830e861c2d5,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 3110863687270979980, guid: 247cb5ece7b3b0c4db14f830e861c2d5,
         type: 3}
       propertyPath: canvas

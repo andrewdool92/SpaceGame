@@ -1,7 +1,10 @@
 {
     "name": "Managers",
     "rootNamespace": "SpaceGame.Managers",
-    "references": [],
+    "references": [
+        "GUID:34338907bfe24d84f9c472b9be240df2",
+        "GUID:29d7796fd0a329c40a6c706b8f9ed5e8"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
