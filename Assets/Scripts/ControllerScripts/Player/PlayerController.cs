@@ -2,13 +2,11 @@ using SpaceGame.Utils;
 using UnityEngine;
 using Weapons;
 
-[RequireComponent(typeof(MovementController))]
 [RequireComponent(typeof(Destructible))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MovementController
 {
     private InputReader _input;
 
-    private MovementController _movementController;
     private Destructible _ship;
 
     [SerializeField]
@@ -18,8 +16,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _movementController = GetComponent<MovementController>();
         _ship = GetComponent<Destructible>();
+        gameObject.SetActive(false);
     }
 
     public void Init(InputReader gameInput)
@@ -27,6 +25,7 @@ public class PlayerController : MonoBehaviour
         _input = gameInput;
 
         _ship.onDestruction += OnDeath;
+
         gameObject.SetActive(true);
     }
 
@@ -52,10 +51,14 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        _input.AimEvent += HandleAimEvent;
+        //_input.AimEvent += HandleAimEvent;
+        _input.PitchEvent += SetPitch;
+        _input.YawEvent += SetYaw;
+        _input.RollEvent += SetRoll;
+
         _input.ThrustEvent += HandleThrustEvent;
-        _input.BoostEvent += HandleBoostEvent;
-        _input.BrakeEvent += HandleBrakeEvent;
+        _input.BoostEvent += SetBoost;
+        _input.BrakeEvent += SetBrake;
 
         _input.PrimaryTriggeredEvent += _primaryWeapons.OnFiringButtonPressed;
         _input.PrimaryReleasedEvent += _primaryWeapons.OnFiringButtonReleased;
@@ -71,10 +74,14 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        _input.AimEvent -= HandleAimEvent;
+        //_input.AimEvent -= HandleAimEvent;
+        _input.PitchEvent -= SetPitch;
+        _input.YawEvent -= SetYaw;
+        _input.RollEvent -= SetRoll;
+
         _input.ThrustEvent -= HandleThrustEvent;
-        _input.BoostEvent -= HandleBoostEvent;
-        _input.BrakeEvent -= HandleBrakeEvent;
+        _input.BoostEvent -= SetBoost;
+        _input.BrakeEvent -= SetBrake;
 
         _input.PrimaryTriggeredEvent -= _primaryWeapons.OnFiringButtonPressed;
         _input.PrimaryReleasedEvent -= _primaryWeapons.OnFiringButtonReleased;
@@ -85,27 +92,17 @@ public class PlayerController : MonoBehaviour
 
     private void HandleThrustEvent(bool thrusting)
     {
-        _movementController.SetForward(thrusting ? 1f : idleForwardThrust);
-    }
-
-    private void HandleBrakeEvent(bool braking)
-    {
-        _movementController.SetBrake(braking);
-    }
-
-    private void HandleBoostEvent(bool boosting)
-    {
-        _movementController.SetBoost(boosting);
+        SetForward(thrusting ? 1f : idleForwardThrust);
     }
 
     private void HandleAimEvent(Vector2 direction)
     {
-        _movementController.SetPitch(-direction.y);
-        _movementController.SetYaw(direction.x);
+        SetPitch(-direction.y);
+        SetYaw(direction.x);
     }
 
     private void OnDeath()
     {
-        _movementController.SetLock(true);
+        SetLock(true);
     }
 }

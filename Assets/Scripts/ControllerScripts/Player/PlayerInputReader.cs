@@ -158,4 +158,9 @@ public class PlayerInputReader : MonoBehaviour, GameInput.IShipControlsActions
     {
         throw new System.NotImplementedException();
     }
+
+    public void OnRightStick(InputAction.CallbackContext context)
+    {
+        throw new System.NotImplementedException();
+    }
 }

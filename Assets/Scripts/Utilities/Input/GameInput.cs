@@ -46,6 +46,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""RightStick"",
+                    ""type"": ""Value"",
+                    ""id"": ""c2d35f47-0ed0-44f9-be2b-ba449f51d7a1"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Roll"",
                     ""type"": ""PassThrough"",
                     ""id"": ""57d07cf6-e817-4735-9f5f-225c08c1b66d"",
@@ -182,39 +191,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""7befb954-d54e-47db-98f2-de7d3f28007c"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""9696c112-ffeb-458f-b12c-a626b0ec2e25"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""cf88d380-f009-4dbc-b0c4-cb089e455a5f"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""6a9c7849-16f0-4d4b-8ca1-9bd2cbb994c9"",
                     ""path"": ""1DAxis"",
@@ -282,17 +258,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9fedd24f-ab86-491e-b48e-d92b1554edf7"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Forward"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""012f5323-a475-4fa1-afb6-5566a52ebde8"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
@@ -317,17 +282,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""299fc44d-0275-45d2-a049-4e8968ea36f2"",
                     ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Brake"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2f12ec1d-3d5f-4685-8a64-ea077a09681c"",
-                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -411,6 +365,147 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""LeftStick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4feaef0e-a48f-4d8f-8d58-1f274ccf4177"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightStick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""ShipGamepadControls"",
+            ""id"": ""ce30df27-78b3-4f09-9614-885271cb8911"",
+            ""actions"": [
+                {
+                    ""name"": ""LeftStick"",
+                    ""type"": ""Value"",
+                    ""id"": ""9cbabcc4-d31a-42fc-b6a3-27e5ba8410bc"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RightStick"",
+                    ""type"": ""Value"",
+                    ""id"": ""43270f50-6c19-4a6c-8bf6-50bdeea39666"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PrimaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c76e9b7-23ce-4899-8f11-9f3366596c5f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""24e8c634-ee1e-4ed8-8a29-9057e05c5a09"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pitch"",
+                    ""type"": ""Value"",
+                    ""id"": ""8756242b-f56f-4085-96c1-184bd7c8de5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5afab8db-e944-4b8a-8b13-9409195e5c79"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftStick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56bc7adf-4de1-4fc4-88b2-5b9c23053d49"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightStick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8cd9fd28-a3fb-4334-9050-1e6428b1f7bd"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78d99de1-3a3e-4047-8b01-4844ca7d792e"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""83d9b1ec-e117-4219-90b3-0004e768fd56"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pitch"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""766e7abf-1c8d-4de3-a984-d08ac5a32efc"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""a16caa7b-194b-4059-89a6-068d9330148c"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -460,6 +555,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_ShipControls = asset.FindActionMap("ShipControls", throwIfNotFound: true);
         m_ShipControls_Mouse = m_ShipControls.FindAction("Mouse", throwIfNotFound: true);
         m_ShipControls_LeftStick = m_ShipControls.FindAction("LeftStick", throwIfNotFound: true);
+        m_ShipControls_RightStick = m_ShipControls.FindAction("RightStick", throwIfNotFound: true);
         m_ShipControls_Roll = m_ShipControls.FindAction("Roll", throwIfNotFound: true);
         m_ShipControls_Strafe = m_ShipControls.FindAction("Strafe", throwIfNotFound: true);
         m_ShipControls_Up = m_ShipControls.FindAction("Up", throwIfNotFound: true);
@@ -470,6 +566,13 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_ShipControls_Shoot = m_ShipControls.FindAction("Shoot", throwIfNotFound: true);
         m_ShipControls_Secondary = m_ShipControls.FindAction("Secondary", throwIfNotFound: true);
         m_ShipControls_Pause = m_ShipControls.FindAction("Pause", throwIfNotFound: true);
+        // ShipGamepadControls
+        m_ShipGamepadControls = asset.FindActionMap("ShipGamepadControls", throwIfNotFound: true);
+        m_ShipGamepadControls_LeftStick = m_ShipGamepadControls.FindAction("LeftStick", throwIfNotFound: true);
+        m_ShipGamepadControls_RightStick = m_ShipGamepadControls.FindAction("RightStick", throwIfNotFound: true);
+        m_ShipGamepadControls_PrimaryWeapon = m_ShipGamepadControls.FindAction("PrimaryWeapon", throwIfNotFound: true);
+        m_ShipGamepadControls_SecondaryWeapon = m_ShipGamepadControls.FindAction("SecondaryWeapon", throwIfNotFound: true);
+        m_ShipGamepadControls_Pitch = m_ShipGamepadControls.FindAction("Pitch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Resume = m_UI.FindAction("Resume", throwIfNotFound: true);
@@ -478,6 +581,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     ~@GameInput()
     {
         UnityEngine.Debug.Assert(!m_ShipControls.enabled, "This will cause a leak and performance issues, GameInput.ShipControls.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_ShipGamepadControls.enabled, "This will cause a leak and performance issues, GameInput.ShipGamepadControls.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, GameInput.UI.Disable() has not been called.");
     }
 
@@ -542,6 +646,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private List<IShipControlsActions> m_ShipControlsActionsCallbackInterfaces = new List<IShipControlsActions>();
     private readonly InputAction m_ShipControls_Mouse;
     private readonly InputAction m_ShipControls_LeftStick;
+    private readonly InputAction m_ShipControls_RightStick;
     private readonly InputAction m_ShipControls_Roll;
     private readonly InputAction m_ShipControls_Strafe;
     private readonly InputAction m_ShipControls_Up;
@@ -558,6 +663,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public ShipControlsActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Mouse => m_Wrapper.m_ShipControls_Mouse;
         public InputAction @LeftStick => m_Wrapper.m_ShipControls_LeftStick;
+        public InputAction @RightStick => m_Wrapper.m_ShipControls_RightStick;
         public InputAction @Roll => m_Wrapper.m_ShipControls_Roll;
         public InputAction @Strafe => m_Wrapper.m_ShipControls_Strafe;
         public InputAction @Up => m_Wrapper.m_ShipControls_Up;
@@ -583,6 +689,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @LeftStick.started += instance.OnLeftStick;
             @LeftStick.performed += instance.OnLeftStick;
             @LeftStick.canceled += instance.OnLeftStick;
+            @RightStick.started += instance.OnRightStick;
+            @RightStick.performed += instance.OnRightStick;
+            @RightStick.canceled += instance.OnRightStick;
             @Roll.started += instance.OnRoll;
             @Roll.performed += instance.OnRoll;
             @Roll.canceled += instance.OnRoll;
@@ -623,6 +732,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @LeftStick.started -= instance.OnLeftStick;
             @LeftStick.performed -= instance.OnLeftStick;
             @LeftStick.canceled -= instance.OnLeftStick;
+            @RightStick.started -= instance.OnRightStick;
+            @RightStick.performed -= instance.OnRightStick;
+            @RightStick.canceled -= instance.OnRightStick;
             @Roll.started -= instance.OnRoll;
             @Roll.performed -= instance.OnRoll;
             @Roll.canceled -= instance.OnRoll;
@@ -670,6 +782,84 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         }
     }
     public ShipControlsActions @ShipControls => new ShipControlsActions(this);
+
+    // ShipGamepadControls
+    private readonly InputActionMap m_ShipGamepadControls;
+    private List<IShipGamepadControlsActions> m_ShipGamepadControlsActionsCallbackInterfaces = new List<IShipGamepadControlsActions>();
+    private readonly InputAction m_ShipGamepadControls_LeftStick;
+    private readonly InputAction m_ShipGamepadControls_RightStick;
+    private readonly InputAction m_ShipGamepadControls_PrimaryWeapon;
+    private readonly InputAction m_ShipGamepadControls_SecondaryWeapon;
+    private readonly InputAction m_ShipGamepadControls_Pitch;
+    public struct ShipGamepadControlsActions
+    {
+        private @GameInput m_Wrapper;
+        public ShipGamepadControlsActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @LeftStick => m_Wrapper.m_ShipGamepadControls_LeftStick;
+        public InputAction @RightStick => m_Wrapper.m_ShipGamepadControls_RightStick;
+        public InputAction @PrimaryWeapon => m_Wrapper.m_ShipGamepadControls_PrimaryWeapon;
+        public InputAction @SecondaryWeapon => m_Wrapper.m_ShipGamepadControls_SecondaryWeapon;
+        public InputAction @Pitch => m_Wrapper.m_ShipGamepadControls_Pitch;
+        public InputActionMap Get() { return m_Wrapper.m_ShipGamepadControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShipGamepadControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IShipGamepadControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ShipGamepadControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ShipGamepadControlsActionsCallbackInterfaces.Add(instance);
+            @LeftStick.started += instance.OnLeftStick;
+            @LeftStick.performed += instance.OnLeftStick;
+            @LeftStick.canceled += instance.OnLeftStick;
+            @RightStick.started += instance.OnRightStick;
+            @RightStick.performed += instance.OnRightStick;
+            @RightStick.canceled += instance.OnRightStick;
+            @PrimaryWeapon.started += instance.OnPrimaryWeapon;
+            @PrimaryWeapon.performed += instance.OnPrimaryWeapon;
+            @PrimaryWeapon.canceled += instance.OnPrimaryWeapon;
+            @SecondaryWeapon.started += instance.OnSecondaryWeapon;
+            @SecondaryWeapon.performed += instance.OnSecondaryWeapon;
+            @SecondaryWeapon.canceled += instance.OnSecondaryWeapon;
+            @Pitch.started += instance.OnPitch;
+            @Pitch.performed += instance.OnPitch;
+            @Pitch.canceled += instance.OnPitch;
+        }
+
+        private void UnregisterCallbacks(IShipGamepadControlsActions instance)
+        {
+            @LeftStick.started -= instance.OnLeftStick;
+            @LeftStick.performed -= instance.OnLeftStick;
+            @LeftStick.canceled -= instance.OnLeftStick;
+            @RightStick.started -= instance.OnRightStick;
+            @RightStick.performed -= instance.OnRightStick;
+            @RightStick.canceled -= instance.OnRightStick;
+            @PrimaryWeapon.started -= instance.OnPrimaryWeapon;
+            @PrimaryWeapon.performed -= instance.OnPrimaryWeapon;
+            @PrimaryWeapon.canceled -= instance.OnPrimaryWeapon;
+            @SecondaryWeapon.started -= instance.OnSecondaryWeapon;
+            @SecondaryWeapon.performed -= instance.OnSecondaryWeapon;
+            @SecondaryWeapon.canceled -= instance.OnSecondaryWeapon;
+            @Pitch.started -= instance.OnPitch;
+            @Pitch.performed -= instance.OnPitch;
+            @Pitch.canceled -= instance.OnPitch;
+        }
+
+        public void RemoveCallbacks(IShipGamepadControlsActions instance)
+        {
+            if (m_Wrapper.m_ShipGamepadControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IShipGamepadControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ShipGamepadControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ShipGamepadControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ShipGamepadControlsActions @ShipGamepadControls => new ShipGamepadControlsActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -720,6 +910,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     {
         void OnMouse(InputAction.CallbackContext context);
         void OnLeftStick(InputAction.CallbackContext context);
+        void OnRightStick(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnStrafe(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
@@ -730,6 +921,14 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnSecondary(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IShipGamepadControlsActions
+    {
+        void OnLeftStick(InputAction.CallbackContext context);
+        void OnRightStick(InputAction.CallbackContext context);
+        void OnPrimaryWeapon(InputAction.CallbackContext context);
+        void OnSecondaryWeapon(InputAction.CallbackContext context);
+        void OnPitch(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

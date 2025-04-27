@@ -11,13 +11,15 @@ namespace SpaceGame.Utils
 
         public event Action<Vector2> MouseMoveEvent;
         public event Action<Vector2> AimEvent;
+        public event Action<float> PitchEvent;
+        public event Action<float> RollEvent;
+        public event Action<float> YawEvent;
         private Vector2 _screenCentre;
         private Vector2 _mousePos;
 
         public event Action<bool> BrakeEvent;
         public event Action<bool> ThrustEvent;
         public event Action<bool> BoostEvent;
-        public event Action<float> RollEvent;
 
         public event Action PrimaryTriggeredEvent;
         public event Action PrimaryReleasedEvent;
@@ -76,7 +78,9 @@ namespace SpaceGame.Utils
             float magnitude = Mathf.Clamp(direction.magnitude - _settings.MouseDeadZone, 0, _settings.MouseTuneRange) / _settings.MouseTuneRange;
             input = direction.normalized * magnitude;
 
-            AimEvent?.Invoke(input);
+            //AimEvent?.Invoke(input);
+            PitchEvent?.Invoke(-input.x);
+            YawEvent?.Invoke(input.y);
         }
 
         public void OnLeftStick(InputAction.CallbackContext context)
@@ -94,8 +98,27 @@ namespace SpaceGame.Utils
             {
                 input = Vector2.zero;
             }
+            else if (Mathf.Abs(input.x) < 0.3)
+            {
+                input.x = 0;
+            }
 
-            AimEvent?.Invoke(input);
+            //PitchEvent?.Invoke(-input.x);
+            //RollEvent?.Invoke(-input.y);
+            ThrustEvent?.Invoke(input.y > 0);
+            BrakeEvent?.Invoke(input.y < 0);
+            YawEvent?.Invoke(input.x);
+        }
+
+        public void OnRightStick(InputAction.CallbackContext context)
+        {
+            Vector2 input = context.ReadValue<Vector2>();
+            if (input.magnitude < _settings.StickDeadZone)
+            {
+                input = Vector2.zero;
+            }
+            PitchEvent?.Invoke(input.y);
+            RollEvent?.Invoke(-input.x * Mathf.Abs(input.x));
         }
 
         public void OnBoost(InputAction.CallbackContext context)
@@ -143,12 +166,12 @@ namespace SpaceGame.Utils
 
         public void OnStrafe(InputAction.CallbackContext context)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnUp(InputAction.CallbackContext context)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnPause(InputAction.CallbackContext context)

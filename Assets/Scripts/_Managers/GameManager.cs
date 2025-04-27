@@ -20,11 +20,16 @@ namespace SpaceGame.Managers
         {
             InputSettings = new();
             InputReader = new(InputSettings);
+
+            LoadPlayer();
         }
 
-        public void OnPlayerLoaded()
+        public async void LoadPlayer()
         {
-            PlayerController player = FindFirstObjectByType<PlayerController>();
+            await SceneManagerUtils.LoadPlayer(Vector3.zero);
+
+            PlayerController player = FindFirstObjectByType<PlayerController>(FindObjectsInactive.Include);
+            player.Init(InputReader);
         }
     }
 }

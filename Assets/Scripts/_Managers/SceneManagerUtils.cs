@@ -1,4 +1,4 @@
-using UnityEditor.Animations;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +23,9 @@ namespace SpaceGame.Managers
             await SceneManager.UnloadSceneAsync(toUnload);
         }
 
-
+        public static async Awaitable LoadPlayer(Vector3 position)
+        {
+            await SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
+        }
     }
 }
