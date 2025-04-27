@@ -79,8 +79,8 @@ namespace SpaceGame.Utils
             input = direction.normalized * magnitude;
 
             //AimEvent?.Invoke(input);
-            PitchEvent?.Invoke(-input.x);
-            YawEvent?.Invoke(input.y);
+            PitchEvent?.Invoke(-input.y);
+            YawEvent?.Invoke(input.x);
         }
 
         public void OnLeftStick(InputAction.CallbackContext context)

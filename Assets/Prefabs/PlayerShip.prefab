@@ -107,6 +107,9 @@ VFXRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_StaticBatchInfo:
@@ -282,8 +285,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3702889783571220537}
-  - component: {fileID: 689386432732346633}
-  - component: {fileID: 8269561656609165986}
   - component: {fileID: 4501927686871207382}
   - component: {fileID: 7875353884154809320}
   - component: {fileID: 3991692025519519608}
@@ -318,52 +319,6 @@ Transform:
   - {fileID: 8823511254514973021}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &689386432732346633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604961908728643155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d2d6b788a5bb4540b2a109cf2ebe450, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainWeapons: {fileID: 0}
-  secondaryWeapons: {fileID: 0}
-  reticuleController: {fileID: 3110863687270979980}
-  deadZone: 50
-  fineTuneRange: 200
-  idleForwardThrust: 0.4
---- !u!114 &8269561656609165986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604961908728643155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce3b7dbfae58d264b85205726f0c2780, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pitchTorque: 5
-  yawTorque: 2
-  rollTorque: 10
-  verticalThrust: 0.2
-  strafeThrust: 1
-  forwardThrust: 1
-  reverseThrust: 0
-  boostMultiplier: 4
-  brakeDrag: 1
-  boostPenalty: 0.5
-  maxVelocity: 5
-  maxBoostVelocity: 20
-  boosting: 0
-  forwardThrusters:
-  - {fileID: 8205111976609849626}
-  - {fileID: 92694281249462906}
 --- !u!114 &4501927686871207382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,6 +544,9 @@ VFXRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_StaticBatchInfo:
@@ -838,6 +796,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

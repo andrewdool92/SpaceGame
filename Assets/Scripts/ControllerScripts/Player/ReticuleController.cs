@@ -65,6 +65,8 @@ public class ReticuleController : MonoBehaviour
         onFixedUpdate();
     }
 
+    #region target logic
+    // TODO this logic doesn't belong here
     public void AssignWeapons(WeaponSystem mainWeapons, WeaponSystem secondaryWeapons)
     {
         weapons = new WeaponSystem[] { mainWeapons, secondaryWeapons };
@@ -166,7 +168,9 @@ public class ReticuleController : MonoBehaviour
             //reticuleMaterial.SetFloat("_TargetLocked", 0f);
         }
     }
+    #endregion
 
+    #region HUD
     private void UpdateReticulePosition()
     {
         if (!targetLocked) return;
@@ -198,4 +202,5 @@ public class ReticuleController : MonoBehaviour
             );
         return screenPosition;
     }
+    #endregion
 }

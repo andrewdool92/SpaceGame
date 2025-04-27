@@ -554,13 +554,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 689386432732346633, guid: 247cb5ece7b3b0c4db14f830e861c2d5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1604961908728643155, guid: 247cb5ece7b3b0c4db14f830e861c2d5,
         type: 3}
-      insertIndex: 2
+      insertIndex: 1
       addedObject: {fileID: 2079178738}
     - targetCorrespondingSourceObject: {fileID: 2211848086299419267, guid: 247cb5ece7b3b0c4db14f830e861c2d5,
         type: 3}
