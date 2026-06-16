@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="DestructonSystem.csproj" />
+  <Project Path="Utilities.csproj" />
+  <Project Path="Weapons.csproj" />
+  <Project Path="Controllers.csproj" />
+  <Project Path="Managers.csproj" />
+  <Project Path="Scripts.csproj" />
+</Solution>

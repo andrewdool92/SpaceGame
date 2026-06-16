@@ -19,10 +19,8 @@ public class TurretAI : AIController
     private IEnumerator firingSequence;
 
 
-    public override void Start()
+    public override void Init()
     {
-        base.Start();
-
         weapons = GetComponent<WeaponSystem>();
         SetTarget(target);
 

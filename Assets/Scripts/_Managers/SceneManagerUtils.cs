@@ -23,9 +23,12 @@ namespace SpaceGame.Managers
             await SceneManager.UnloadSceneAsync(toUnload);
         }
 
-        public static async Awaitable LoadPlayer(Vector3 position)
+        public static async Awaitable<PlayerController> LoadPlayer()
         {
             await SceneManager.LoadSceneAsync("Player", LoadSceneMode.Additive);
+
+            PlayerController player = GameObject.FindFirstObjectByType<PlayerController>(FindObjectsInactive.Include);
+            return player;
         }
     }
 }

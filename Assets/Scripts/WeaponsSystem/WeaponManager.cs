@@ -2,6 +2,7 @@ using SpaceGame.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Weapons
 {
@@ -38,9 +39,9 @@ namespace Weapons
             return instance.effects[weaponData];
         }
 
-        public static ObjectPool<T> GenerateProjectilePool<T>(T template, int size, IWeapon parent, WeaponData weaponData) where T : BaseProjectile
+        public static SimpleObjectPool<T> GenerateProjectilePool<T>(T template, int size, IWeapon parent, WeaponData weaponData) where T : BaseProjectile
         {
-            ObjectPool<T> pool = new ObjectPool<T>();
+            SimpleObjectPool<T> pool = new SimpleObjectPool<T>();
 
             for (int i = 0; i < size; i++)
             {
@@ -52,9 +53,9 @@ namespace Weapons
             return pool;
         }
 
-        public static ObjectPool<T> GeneratePool<T>(T template, int size) where T : MonoBehaviour
+        public static SimpleObjectPool<T> GeneratePool<T>(T template, int size) where T : MonoBehaviour
         {
-            ObjectPool<T> pool = new ObjectPool<T>();
+            SimpleObjectPool<T> pool = new SimpleObjectPool<T>();
 
             for (int i = 0; i < size; i++)
             {

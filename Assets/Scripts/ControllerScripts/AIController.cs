@@ -53,6 +53,8 @@ public class AIController : MonoBehaviour
         if (!rotationJoint) rotationJoint = transform;
     }
 
+    public virtual void Init() { }
+
     // Update is called once per frame
     public virtual void Update() { }
 

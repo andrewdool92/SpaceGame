@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace SpaceGame.Utils
 {
-    public class ObjectPool<T>
+    public class SimpleObjectPool<T>
     {
         private Queue<T> pool;
 
-        public ObjectPool()
+        public SimpleObjectPool()
         {
             pool = new Queue<T>();
         }

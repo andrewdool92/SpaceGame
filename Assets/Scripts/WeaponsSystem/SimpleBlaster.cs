@@ -12,8 +12,8 @@ namespace Weapons
 
         public ParticleHitEffect explosion;
         public ParticleHitEffect muzzleFlare;
-        public ObjectPool<BaseProjectile> projectilePool;
-        public ObjectPool<ImpactDecal> impactDecalPool;
+        public SimpleObjectPool<BaseProjectile> projectilePool;
+        public SimpleObjectPool<ImpactDecal> impactDecalPool;
 
         private int currentAmmo = 0;
 
@@ -24,20 +24,6 @@ namespace Weapons
 
         private Targetable target;
         private bool targetSet = false;
-
-        //private SimpleBlaster() { }
-        //public static SimpleBlaster Instantiate(WeaponSystem weaponSystem, WeaponData data)
-        //{
-        //    SimpleBlaster blaster = new SimpleBlaster();
-        //    blaster.weaponSystem = weaponSystem;
-        //    blaster.weaponData = data;
-        //    (blaster.muzzleFlare, blaster.explosion) = WeaponManager.GetParticleEffects(data);
-
-        //    blaster.projectilePool = WeaponManager.GenerateProjectilePool<BaseProjectile>(data.projectileTemplate, data.maxProjectiles, blaster, data);
-        //    blaster.impactDecalPool = WeaponManager.GeneratePool<ImpactDecal>(data.blastMark, data.maxProjectiles);
-
-        //    return blaster;
-        //}
 
         public SimpleBlaster(WeaponSystem system, WeaponData data)
         {

@@ -1,11 +1,12 @@
 using UnityEngine;
 using SpaceGame.Utils;
+using System.Threading.Tasks;
 
 namespace SpaceGame.Managers
 {
     public class GameManager : MonoBehaviour
     {
-        private static GameManager instance;
+        public static GameManager instance;
 
         public InputSettings InputSettings;
         public InputReader InputReader;
@@ -20,16 +21,7 @@ namespace SpaceGame.Managers
         {
             InputSettings = new();
             InputReader = new(InputSettings);
-
-            LoadPlayer();
         }
 
-        public async void LoadPlayer()
-        {
-            await SceneManagerUtils.LoadPlayer(Vector3.zero);
-
-            PlayerController player = FindFirstObjectByType<PlayerController>(FindObjectsInactive.Include);
-            player.Init(InputReader);
-        }
     }
 }
